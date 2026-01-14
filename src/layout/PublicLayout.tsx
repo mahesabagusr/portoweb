@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "@/components/NavbarPublic";
 import Footer from "@/components/FooterPublic";
 import LoadingScreen from "@/components/LoadingScreen";
+import CursorFollower from "@/components/CursorFollower";
 
 export default function MainLayout(): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
@@ -11,12 +12,14 @@ export default function MainLayout(): React.JSX.Element {
     <>
       {isLoading && <LoadingScreen onFinish={() => setIsLoading(false)} />}
 
+      <CursorFollower />
+
       <div
-        className={`flex flex-col min-h-screen ${
+        className={`relative z-10 flex flex-col min-h-screen ${
           isLoading ? "opacity-0" : "opacity-100"
         } transition-opacity duration-500`}
       >
-        <Navbar />
+        <Navbar className=""></Navbar>
         <main className="flex-1 container mx-auto py-4">
           <Outlet />
         </main>
