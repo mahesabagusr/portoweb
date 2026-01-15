@@ -70,7 +70,7 @@ export default function Jumbotron(): React.JSX.Element {
             className="flex items-center gap-2 text-white hover:text-gray-300 transition-all duration-500 ease-in-out hover:scale-105 group"
             aria-label="Instagram"
           >
-            <Instagram className="w-6 h-6 sm:w-7 sm:h-7 transition-all duration-500 ease-in-out" />
+            <Instagram className="w-6  sm:w-7 sm:h-7 transition-all duration-500 ease-in-out h-6" />
             <span className="text-sm sm:text-base font-medium transition-all duration-500 ease-in-out">
               @mahesabagus.r
             </span>
