@@ -7,9 +7,9 @@ interface NavbarMenuItem {
 
 const NavbarMenu: NavbarMenuItem[] = [
   { name: "Home", href: "#home" },
-  { name: "Partner", href: "#partner" },
-  { name: "Tournament", href: "#tournament" },
-  { name: "Blog", href: "#blog" },
+  { name: "Experience", href: "#partner" },
+  { name: "Projects", href: "#tournament" },
+  { name: "Contact", href: "#blog" },
 ];
 
 interface NavbarProps {

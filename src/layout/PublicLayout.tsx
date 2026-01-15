@@ -20,7 +20,7 @@ export default function MainLayout(): React.JSX.Element {
         } transition-opacity duration-500`}
       >
         <Navbar className=""></Navbar>
-        <main className="flex-1 container mx-auto py-4">
+        <main className="flex-1">
           <Outlet />
         </main>
         <Footer />

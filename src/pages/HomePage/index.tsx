@@ -2,17 +2,17 @@ import Particles from "@/components/background/particles/Particles";
 
 export default function HomePage(): React.JSX.Element {
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen text-center">
+    <div className=" flex flex-col items-center justify-center min-h-screen text-center">
       <div
-        className="fixed inset-0 z-0 pointer-events-auto"
-        style={{ width: "100vw", height: "100vh" }}
+        className="fixed inset-0 z-0"
+        style={{ width: "100%", height: "600px" }}
       >
         <Particles
           particleColors={["#ffffff", "#ffffff"]}
-          particleCount={300}
+          particleCount={200}
           particleSpread={10}
-          speed={0.15}
-          particleBaseSize={120}
+          speed={0.1}
+          particleBaseSize={100}
           moveParticlesOnHover={true}
           alphaParticles={false}
           disableRotation={false}
