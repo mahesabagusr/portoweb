@@ -27,7 +27,7 @@ export default function NotFound(): React.JSX.Element {
         </div>
         <FuzzyText
           fps={30}
-          fontSize={120}
+          fontSize={185}
           fontFamily="Times New Roman"
           className=" "
         >
@@ -41,7 +41,7 @@ export default function NotFound(): React.JSX.Element {
         >
           Page Not Found
         </FuzzyText>
-        <GlassButton onClick={() => navigate("/")} className="mt-2">
+        <GlassButton onClick={() => navigate("/")}>
           Back To Main Page
         </GlassButton>
       </div>

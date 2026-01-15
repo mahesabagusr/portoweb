@@ -7,6 +7,7 @@ interface NavbarMenuItem {
 
 const NavbarMenu: NavbarMenuItem[] = [
   { name: "Home", href: "#home" },
+  { name: "Education", href: "#tournament" },
   { name: "Experience", href: "#partner" },
   { name: "Projects", href: "#tournament" },
   { name: "Contact", href: "#blog" },
@@ -21,7 +22,7 @@ export default function Navbar({
 }: NavbarProps): React.JSX.Element {
   return (
     <nav
-      className={`sticky top-8 z-50 mx-4 sm:mx-10 lg:mx-120 my-10 ${className}`}
+      className={`sticky top-8 z-50 mx-4 sm:mx-10 lg:mx-110 my-10 ${className}`}
     >
       <div className="relative backdrop-blur-xl bg-primary/10 border border-primary/20 rounded-full shadow-2xl shadow-primary/20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none"></div>
