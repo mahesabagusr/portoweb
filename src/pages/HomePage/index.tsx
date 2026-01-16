@@ -10,7 +10,7 @@ export default function HomePage(): React.JSX.Element {
         style={{ width: "100vw", height: "100vh" }}
       >
         <Particles
-          particleColors={["#FFFFFF"]}
+          particleColors={["#1d175c", "#1d285c", "#1d5c8c"]}
           particleCount={500}
           particleSpread={15}
           speed={0.1}

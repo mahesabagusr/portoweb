@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+* {
+  touch-action: pan-x pan-y;
+}
+
+html {
+  touch-action: manipulation;
+}
+
 @theme inline {
   --font-sans: "Plus Jakarta Sans", sans-serif;
   --radius-sm: calc(var(--radius) - 4px);

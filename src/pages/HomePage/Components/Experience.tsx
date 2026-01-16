@@ -1,3 +1,5 @@
+import React from "react";
+import { motion, Variants } from "framer-motion";
 import ScrollFloat from "@/components/ScrollFloat";
 import GlareHover from "@/components/GlareHover";
 import { Calendar } from "lucide-react";
@@ -25,6 +27,25 @@ const educationData: EducationItem[] = [
     logo: TelkomSch,
   },
 ];
+
+const cardVariants: Variants = {
+  offscreen: {
+    y: 50,
+    opacity: 0,
+    scale: 0.9,
+  },
+  onscreen: (index: number) => ({
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "keyframes",
+      bounce: 0.3,
+      duration: 0.7,
+      delay: index * 0.2,
+    },
+  }),
+};
 
 export default function Experience(): React.JSX.Element {
   return (
@@ -54,13 +75,14 @@ export default function Experience(): React.JSX.Element {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 justify-items-start">
           {educationData.map((edu, index) => (
-            <div
+            <motion.div
               key={index}
-              className="relative animate-fade-in opacity-0 pointer-events-auto w-full h-full"
-              style={{
-                animationDelay: `${0.4 + index * 0.2}s`,
-                animationFillMode: "forwards",
-              }}
+              className="relative pointer-events-auto w-full h-full"
+              custom={index}
+              initial="offscreen"
+              whileInView="onscreen"
+              viewport={{ once: false, amount: 0.4 }}
+              variants={cardVariants}
             >
               <GlareHover
                 width="100%"
@@ -76,10 +98,9 @@ export default function Experience(): React.JSX.Element {
                 className="backdrop-blur-sm transition-all duration-500 ease-in-out hover:scale-[1.02] hover:shadow-[0_8px_32px_rgba(255,255,255,0.15)]"
               >
                 <div className="p-6 sm:p-8">
-                  {/* Header with Logo */}
                   <div className="flex items-start gap-4 sm:gap-6">
                     {edu.logo && (
-                      <div className="flex-shrink-0 w-16 h-16 sm:w-22 sm:h-22 bg-white/10 rounded-xl p-3 flex items-center justify-center backdrop-blur-sm">
+                      <div className="flex-shrink-0 w-16 h-16 sm:w-24 sm:h-24 bg-white/10 rounded-xl p-4 flex items-center justify-center backdrop-blur-sm">
                         <img
                           src={edu.logo}
                           alt={`${edu.institution} logo`}
@@ -102,7 +123,7 @@ export default function Experience(): React.JSX.Element {
                   </div>
                 </div>
               </GlareHover>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

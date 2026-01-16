@@ -89,7 +89,7 @@ export default function Jumbotron(): React.JSX.Element {
 
         <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center items-center pointer-events-auto">
           <GlassButton className="px-6 py-4 sm:px-8 sm:py-6 text-base sm:text-lg w-full sm:w-auto max-w-xs sm:max-w-none">
-            View Projects
+            Download CV
           </GlassButton>
           <GlassButton className="px-6 py-4 sm:px-8 sm:py-6 text-base sm:text-lg w-full sm:w-auto max-w-xs sm:max-w-none">
             Contact Me
