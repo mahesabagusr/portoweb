@@ -1,10 +1,10 @@
-import React from "react";
-import { motion, Variants } from "framer-motion";
-import ScrollFloat from "@/components/ScrollFloat";
-import GlareHover from "@/components/GlareHover";
-import { Calendar } from "lucide-react";
-import TelkomUni from "@/assets/images/telkomuni.png";
-import TelkomSch from "@/assets/images/telkomsch.png";
+import React from 'react';
+import { motion, type Variants } from 'framer-motion';
+import ScrollFloat from '@/components/custom/ScrollFloat';
+import GlareHover from '@/components/custom/GlareHover';
+import { Calendar } from 'lucide-react';
+import TelkomUni from '@/assets/images/telkomuni.png';
+import TelkomSch from '@/assets/images/telkomsch.png';
 
 interface EducationItem {
   institution: string;
@@ -15,31 +15,37 @@ interface EducationItem {
 
 const educationData: EducationItem[] = [
   {
-    institution: "Telkom University Bandung",
-    degree: "Bachelor of Informatics",
-    period: "2024 - Now",
+    institution: 'Telkom University Bandung',
+    degree: 'Bachelor of Informatics',
+    period: '2024 - Now',
     logo: TelkomUni,
   },
   {
-    institution: "SMK Telkom Purwokerto",
-    degree: "Software Engineering",
-    period: "Jul 2021 - Jul 2024",
+    institution: 'SMK Telkom Purwokerto',
+    degree: 'Software Engineering',
+    period: '2021 - 2024',
     logo: TelkomSch,
   },
 ];
 
 const cardVariants: Variants = {
-  offscreen: {
+  offscreen: (index: number) => ({
     y: 50,
     opacity: 0,
     scale: 0.9,
-  },
+    transition: {
+      type: 'inertia',
+      bounce: 0.3,
+      duration: 0.7,
+      delay: index * 0.2,
+    },
+  }),
   onscreen: (index: number) => ({
     y: 0,
     opacity: 1,
     scale: 1,
     transition: {
-      type: "keyframes",
+      type: 'keyframes',
       bounce: 0.3,
       duration: 0.7,
       delay: index * 0.2,
@@ -49,7 +55,7 @@ const cardVariants: Variants = {
 
 export default function Experience(): React.JSX.Element {
   return (
-    <section className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 pointer-events-none">
+    <section className="pointer-events-none relative z-10 mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <div className="space-y-8 sm:space-y-12">
         <div className="text-center">
           <ScrollFloat
@@ -73,11 +79,11 @@ export default function Experience(): React.JSX.Element {
           </ScrollFloat>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 justify-items-start">
+        <div className="grid grid-cols-1 justify-items-start gap-4 sm:gap-6 md:grid-cols-2">
           {educationData.map((edu, index) => (
             <motion.div
               key={index}
-              className="relative pointer-events-auto w-full h-full"
+              className="pointer-events-auto relative h-full w-full"
               custom={index}
               initial="offscreen"
               whileInView="onscreen"
@@ -100,23 +106,21 @@ export default function Experience(): React.JSX.Element {
                 <div className="p-6 sm:p-8">
                   <div className="flex items-start gap-4 sm:gap-6">
                     {edu.logo && (
-                      <div className="flex-shrink-0 w-16 h-16 sm:w-24 sm:h-24 bg-white/10 rounded-xl p-4 flex items-center justify-center backdrop-blur-sm">
+                      <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-xl bg-white/10 p-4 backdrop-blur-sm sm:h-24 sm:w-24">
                         <img
                           src={edu.logo}
                           alt={`${edu.institution} logo`}
-                          className="w-full h-full object-contain brightness-0 invert"
+                          className="h-full w-full object-contain brightness-0 invert"
                         />
                       </div>
                     )}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="sm:text-xl font-bold text-white mb-2">
-                        {edu.institution}
-                      </h3>
-                      <p className="text-base sm:text-lg text-gray-300 font-medium mb-2 italic">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="mb-2 font-bold text-white sm:text-xl">{edu.institution}</h3>
+                      <p className="mb-2 text-base font-medium text-gray-300 italic sm:text-lg">
                         {edu.degree}
                       </p>
-                      <div className="flex items-center gap-2 text-gray-400 text-sm sm:text-base justify-center">
-                        <Calendar className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                      <div className="flex items-center justify-center gap-2 text-sm text-gray-400 sm:text-base">
+                        <Calendar className="h-4 w-4 flex-shrink-0 sm:h-5 sm:w-5" />
                         <span className="font-medium">{edu.period}</span>
                       </div>
                     </div>
