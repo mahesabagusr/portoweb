@@ -3,7 +3,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+* {
+  touch-action: pan-x pan-y;
+}
+
+html {
+  touch-action: manipulation;
+}
+
 @theme inline {
+  --font-sans: "Plus Jakarta Sans", sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -77,37 +86,61 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Dark Purple Futuristic Theme */
+  /* Deep space backgrounds */
+  --background: oklch(0.12 0.04 285); /* Deep purple-black */
+  --foreground: oklch(0.95 0.02 285); /* Near-white with purple tint */
+
+  /* Card surfaces with purple undertones */
+  --card: oklch(0.18 0.05 285); /* Slightly lighter than background */
+  --card-foreground: oklch(0.95 0.02 285);
+
+  /* Popovers */
+  --popover: oklch(0.16 0.05 285); /* Dark purple surface */
+  --popover-foreground: oklch(0.95 0.02 285);
+
+  /* Primary - Vibrant purple glow */
+  --primary: oklch(0.65 0.25 285); /* Bright purple */
+  --primary-foreground: oklch(0.98 0.01 285);
+
+  /* Secondary - Electric blue accent */
+  --secondary: oklch(0.28 0.08 285); /* Muted purple-grey */
+  --secondary-foreground: oklch(0.95 0.02 285);
+
+  /* Muted elements */
+  --muted: oklch(0.25 0.05 285); /* Dark purple-grey */
+  --muted-foreground: oklch(0.65 0.05 285); /* Medium grey with purple tint */
+
+  /* Accent - Cyan/magenta highlights */
+  --accent: oklch(0.35 0.12 285); /* Medium purple */
+  --accent-foreground: oklch(0.98 0.01 285);
+
+  /* Destructive - Neon red */
+  --destructive: oklch(0.65 0.25 15); /* Bright red-pink */
+
+  /* Borders with purple glow */
+  --border: oklch(0.35 0.08 285 / 30%); /* Purple-tinted border */
+  --input: oklch(0.25 0.06 285 / 50%); /* Input field border */
+
+  /* Focus rings - Bright purple */
+  --ring: oklch(0.7 0.25 285); /* Glowing purple ring */
+
+  /* Charts - Futuristic color palette */
+  --chart-1: oklch(0.65 0.25 285); /* Primary purple */
+  --chart-2: oklch(0.65 0.22 250); /* Electric blue */
+  --chart-3: oklch(0.7 0.2 320); /* Magenta */
+  --chart-4: oklch(0.6 0.2 200); /* Cyan */
+  --chart-5: oklch(0.65 0.18 140); /* Neon green */
+
+  /* Sidebar with deep purple theme */
+  --sidebar: oklch(0.15 0.05 285); /* Dark purple sidebar */
+  --sidebar-foreground: oklch(0.9 0.03 285);
+  --sidebar-primary: oklch(0.6 0.23 285); /* Vibrant purple */
+  --sidebar-primary-foreground: oklch(0.98 0.01 285);
+  --sidebar-accent: oklch(0.28 0.08 285);
+  --sidebar-accent-foreground: oklch(0.95 0.02 285);
+  --sidebar-border: oklch(0.35 0.08 285 / 25%);
+  --sidebar-ring: oklch(0.7 0.25 285);
 }
 
 @layer base {
@@ -116,5 +149,59 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .cursor-follower {
+    @apply fixed pointer-events-none z-[9999] transition-opacity duration-300;
+    transform: translate(-50%, -50%);
+  }
+
+  .cursor-ring {
+    @apply absolute rounded-full border-2;
+    width: 40px;
+    height: 40px;
+    border-color: oklch(0.65 0.25 285 / 0.6);
+    box-shadow: 0 0 20px oklch(0.65 0.25 285 / 0.4);
+    animation: pulseRing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    transition: all 0.3s ease;
+  }
+
+  .cursor-ring-hover {
+    width: 50px;
+    height: 50px;
+    border-color: oklch(0.7 0.2 320 / 0.8);
+    box-shadow: 0 0 30px oklch(0.7 0.2 320 / 0.6);
+  }
+
+  @keyframes pulseRing {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.2);
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.8s ease-out;
   }
 }

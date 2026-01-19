@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 
 interface NavbarMenuItem {
   name: string;
@@ -8,53 +7,45 @@ interface NavbarMenuItem {
 
 const NavbarMenu: NavbarMenuItem[] = [
   { name: "Home", href: "#home" },
-  { name: "Partner", href: "#partner" },
-  { name: "Tournament", href: "#tournament" },
-  { name: "Blog", href: "#blog" },
+  { name: "Education", href: "#tournament" },
+  { name: "Experience", href: "#partner" },
+  { name: "Projects", href: "#tournament" },
+  { name: "Contact", href: "#blog" },
 ];
 
-export default function Navbar(): React.JSX.Element {
+interface NavbarProps {
+  className?: string;
+}
+
+export default function Navbar({
+  className = "",
+}: NavbarProps): React.JSX.Element {
   return (
-    <nav className="bg-white sticky top-0 z-50 shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          {/* Logo Section */}
-          <div className="flex-shrink-0 flex items-center">
-            <a
-              href="/"
-              className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
-            >
-              JadiJago
-            </a>
-          </div>
+    <nav
+      className={`sticky top-8 z-50 mx-4 sm:mx-10 lg:mx-110 my-10 ${className}`}
+    >
+      <div className="relative backdrop-blur-xl bg-primary/10 border border-primary/20 rounded-full shadow-2xl shadow-primary/20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none"></div>
 
-          {/* Desktop Menu Section */}
-          <div className="hidden sm:ml-6 sm:flex sm:items-center sm:space-x-8">
-            {NavbarMenu.map((item: NavbarMenuItem) => (
-              <a
-                key={item.name} // Lebih baik menggunakan item.name atau item.href sebagai key jika unik
-                href={item.href}
-                className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                {item.name}
-              </a>
-            ))}
+        <div className="relative mx-auto px-2 sm:px-6 lg:px-8">
+          <div className="flex justify-center items-center h-16">
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              {NavbarMenu.map((item: NavbarMenuItem) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="relative text-foreground/80 hover:text-primary px-2 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 hover:bg-primary/10 group"
+                >
+                  {item.name}
+                  <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm bg-primary/20"></span>
+                </a>
+              ))}
+            </div>
           </div>
-
-          {/* Action Buttons Section */}
-          <div className="hidden sm:flex items-center space-x-4 ml-6">
-            <Button variant="outline" size="lg" className="px-4">
-              Sign Up
-            </Button>
-            <Button size="lg" className="px-4">
-              Login
-            </Button>
-          </div>
-
-          {/* TODO: Add Mobile Menu (Hamburger) for smaller screens */}
         </div>
+
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
       </div>
     </nav>
   );
-};
-
+}
