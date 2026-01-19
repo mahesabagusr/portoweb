@@ -53,7 +53,7 @@ const cardVariants: Variants = {
   }),
 };
 
-export default function Experience(): React.JSX.Element {
+export default function Education(): React.JSX.Element {
   return (
     <section className="pointer-events-none relative z-10 mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <div className="space-y-8 sm:space-y-12">
