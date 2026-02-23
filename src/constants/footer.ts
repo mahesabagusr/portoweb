@@ -19,7 +19,7 @@ export const techStack: TechItem[] = [
   { name: 'Vite', icon: 'https://cdn.simpleicons.org/vite/646CFF' },
   { name: 'Tailwind CSS', icon: 'https://cdn.simpleicons.org/tailwindcss/06B6D4' },
   { name: 'ReactBits', icon: 'https://cdn.simpleicons.org/react/ffffff' },
-  { name: 'Go', icon: 'https://cdn.simpleicons.org/go/00ADD8' },
+  { name: 'ExpressJs', icon: 'https://cdn.simpleicons.org/express/ffffff' },
 ];
 
 export const socialLinks: SocialLink[] = [
