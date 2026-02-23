@@ -1,7 +1,7 @@
 // import { useState } from "react";
 import { Outlet } from 'react-router-dom';
-import Navbar from '@/components/custom/NavbarPublic';
-import Footer from '@/components/custom/FooterPublic';
+import Navbar from '@/components/NavbarPublic';
+import Footer from '@/components/FooterPublic';
 // import LoadingScreen from "@/components/custom/LoadingScreen";
 import CursorFollower from '@/components/custom/CursorFollower';
 
