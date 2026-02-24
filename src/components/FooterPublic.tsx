@@ -50,7 +50,7 @@ export default function Footer(): React.JSX.Element {
         {/* Divider */}
         <div className="mt-8 mb-5 h-px w-full bg-white/10" />
 
-        {/* Copyright */}
+
         <p className="text-center text-xs text-white/40 sm:text-sm">
           © {new Date().getFullYear()}{' '}
           <span className="font-semibold text-white/60">Mahesa Bagus Raditya</span>. All rights
