@@ -1,57 +1,9 @@
 import React from 'react';
-import { motion, type Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import ScrollFloat from '@/components/custom/ScrollFloat';
 import GlareHover from '@/components/custom/GlareHover';
 import { Calendar } from 'lucide-react';
-import TelkomUni from '@/assets/images/telkomuni.png';
-import TelkomSch from '@/assets/images/telkomsch.png';
-
-interface EducationItem {
-  institution: string;
-  degree: string;
-  period: string;
-  logo?: string;
-}
-
-const educationData: EducationItem[] = [
-  {
-    institution: 'Telkom University Bandung',
-    degree: 'Bachelor of Informatics',
-    period: '2024 - Now',
-    logo: TelkomUni,
-  },
-  {
-    institution: 'SMK Telkom Purwokerto',
-    degree: 'Software Engineering',
-    period: '2021 - 2024',
-    logo: TelkomSch,
-  },
-];
-
-const cardVariants: Variants = {
-  offscreen: (index: number) => ({
-    y: 50,
-    opacity: 0,
-    scale: 0.9,
-    transition: {
-      type: 'inertia',
-      bounce: 0.3,
-      duration: 0.7,
-      delay: index * 0.2,
-    },
-  }),
-  onscreen: (index: number) => ({
-    y: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      type: 'keyframes',
-      bounce: 0.3,
-      duration: 0.7,
-      delay: index * 0.2,
-    },
-  }),
-};
+import { educationData, cardVariants } from '@/constants/education';
 
 export default function Education(): React.JSX.Element {
   return (
@@ -60,7 +12,7 @@ export default function Education(): React.JSX.Element {
         <div className="text-center">
           <ScrollFloat
             containerClassName="mb-4 "
-            textClassName="text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] !text-6xl"
+            textClassName="text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] sm:!text-5xl xl:!text-6xl "
             scrollStart="top bottom"
             scrollEnd="center center"
           >
@@ -84,6 +36,7 @@ export default function Education(): React.JSX.Element {
             <motion.div
               key={index}
               className="pointer-events-auto relative h-full w-full"
+              style={{ opacity: 0, transform: 'translateY(50px) scale(0.9)' }}
               custom={index}
               initial="offscreen"
               whileInView="onscreen"
@@ -110,6 +63,9 @@ export default function Education(): React.JSX.Element {
                         <img
                           src={edu.logo}
                           alt={`${edu.institution} logo`}
+                          width={96}
+                          height={96}
+                          decoding="async"
                           className="h-full w-full object-contain brightness-0 invert"
                         />
                       </div>

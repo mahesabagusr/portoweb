@@ -1,62 +1,57 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from 'react';
 
 export default function CursorFollower(): React.JSX.Element {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [delayedPosition, setDelayedPosition] = useState({ x: 0, y: 0 });
-  const [isVisible, setIsVisible] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
+  const followerRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+  const pos = useRef({ x: 0, y: 0 });
+  const delayed = useRef({ x: 0, y: 0 });
+  const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      if (!isVisible) setIsVisible(true);
+    const follower = followerRef.current;
+    const ring = ringRef.current;
+    if (!follower || !ring) return;
 
-      const element = document.elementFromPoint(e.clientX, e.clientY);
+    const onMove = (e: MouseEvent) => {
+      pos.current = { x: e.clientX, y: e.clientY };
+      follower.style.opacity = '1';
+
+      const target = document.elementFromPoint(e.clientX, e.clientY);
       const isInteractive =
-        element?.tagName === "A" ||
-        element?.tagName === "BUTTON" ||
-        element?.getAttribute("role") === "button" ||
-        element?.closest("a, button, [role='button']") !== null;
+        target?.tagName === 'A' ||
+        target?.tagName === 'BUTTON' ||
+        target?.getAttribute('role') === 'button' ||
+        target?.closest('a, button, [role="button"]') !== null;
 
-      setIsHovering(isInteractive);
+      ring.className = `cursor-ring${isInteractive ? ' cursor-ring-hover' : ''}`;
     };
 
-    const handleMouseLeave = () => {
-      setIsVisible(false);
+    const onLeave = () => {
+      follower.style.opacity = '0';
     };
 
-    window.addEventListener("mousemove", updatePosition);
-    document.addEventListener("mouseleave", handleMouseLeave);
+    const animate = () => {
+      delayed.current.x += (pos.current.x - delayed.current.x) * 0.05;
+      delayed.current.y += (pos.current.y - delayed.current.y) * 0.05;
+      follower.style.left = `${delayed.current.x}px`;
+      follower.style.top = `${delayed.current.y}px`;
+      rafRef.current = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseleave', onLeave);
+    rafRef.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener("mousemove", updatePosition);
-      document.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseleave', onLeave);
+      cancelAnimationFrame(rafRef.current);
     };
-  }, [isVisible]);
-
-  useEffect(() => {
-    const animate = () => {
-      setDelayedPosition((prev) => ({
-        x: prev.x + (position.x - prev.x) * 0.05,
-        y: prev.y + (position.y - prev.y) * 0.05,
-      }));
-    };
-
-    const animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [position, delayedPosition]);
+  }, []);
 
   return (
-    <div
-      className={`cursor-follower ${isVisible ? "opacity-100" : "opacity-0"}`}
-      style={{
-        left: `${delayedPosition.x}px`,
-        top: `${delayedPosition.y}px`,
-      }}
-    >
-      <div
-        className={`cursor-ring ${isHovering ? "cursor-ring-hover" : ""}`}
-      ></div>
+    <div ref={followerRef} className="cursor-follower" style={{ opacity: 0 }}>
+      <div ref={ringRef} className="cursor-ring" />
     </div>
   );
 }

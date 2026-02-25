@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface NavbarMenuItem {
   name: string;
@@ -6,45 +6,41 @@ interface NavbarMenuItem {
 }
 
 const NavbarMenu: NavbarMenuItem[] = [
-  { name: "Home", href: "#home" },
-  { name: "Education", href: "#tournament" },
-  { name: "Experience", href: "#partner" },
-  { name: "Projects", href: "#tournament" },
-  { name: "Contact", href: "#blog" },
+  { name: 'Home', href: '#home' },
+  { name: 'Education', href: '#tournament' },
+  { name: 'Experience', href: '#partner' },
+  { name: 'Projects', href: '#tournament' },
+  { name: 'Contact', href: '#blog' },
 ];
 
 interface NavbarProps {
   className?: string;
 }
 
-export default function Navbar({
-  className = "",
-}: NavbarProps): React.JSX.Element {
+export default function Navbar({ className = '' }: NavbarProps): React.JSX.Element {
   return (
-    <nav
-      className={`sticky top-8 z-50 mx-4 sm:mx-10 lg:mx-110 my-10 ${className}`}
-    >
-      <div className="relative backdrop-blur-xl bg-primary/10 border border-primary/20 rounded-full shadow-2xl shadow-primary/20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none"></div>
+    <nav className={`sticky top-8 z-50 mx-4 my-10 sm:mx-10 lg:mx-110 ${className}`}>
+      <div className="bg-primary/10 border-primary/20 shadow-primary/20 relative overflow-hidden rounded-full border shadow-2xl backdrop-blur-xl">
+        <div className="from-primary/5 to-accent/5 pointer-events-none absolute inset-0 bg-gradient-to-br via-transparent"></div>
 
         <div className="relative mx-auto px-2 sm:px-6 lg:px-8">
-          <div className="flex justify-center items-center h-16">
-            <div className="flex items-center space-x-1 sm:space-x-2">
+          <div className="flex h-16 items-center justify-center">
+            <div className="flex items-center sm:space-x-2">
               {NavbarMenu.map((item: NavbarMenuItem) => (
                 <a
                   key={item.name}
                   href={item.href}
-                  className="relative text-foreground/80 hover:text-primary px-2 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 hover:bg-primary/10 group"
+                  className="text-foreground/80 hover:text-primary hover:bg-primary/10 group relative rounded-full px-2 py-2 text-xs font-medium transition-all duration-300 sm:px-4 sm:text-sm"
                 >
                   {item.name}
-                  <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm bg-primary/20"></span>
+                  <span className="bg-primary/20 absolute inset-0 rounded-full opacity-0 blur-sm transition-opacity duration-300 group-hover:opacity-100"></span>
                 </a>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+        <div className="via-primary/50 absolute right-0 bottom-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent"></div>
       </div>
     </nav>
   );
