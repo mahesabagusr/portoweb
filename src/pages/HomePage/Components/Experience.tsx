@@ -37,7 +37,7 @@ export default function Experience(): React.JSX.Element {
           {experienceData.map((exp, index) => (
             <motion.div
               key={index}
-              className="pointer-events-auto relative z-10 h-full w-full sm:pl-14"
+              className="pointer-events-auto relative z-10 h-full w-full"
               style={{ opacity: 0, transform: 'translateY(60px) scale(0.95)' }}
               custom={index}
               initial="offscreen"
@@ -45,8 +45,6 @@ export default function Experience(): React.JSX.Element {
               viewport={{ once: false, amount: 0.2 }}
               variants={experienceCardVariants}
             >
-              <span className="absolute top-22 left-[13px] hidden h-3 w-3 rounded-full border-2 border-white/40 bg-white/20 sm:left-[19px] sm:block" />
-
               <GlareHover
                 width="100%"
                 height="auto"
