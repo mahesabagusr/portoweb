@@ -4,7 +4,10 @@ import { Github, Linkedin, Instagram, Mail } from 'lucide-react';
 
 export default function Jumbotron(): React.JSX.Element {
   return (
-    <div className="pointer-events-none relative z-10 mx-auto flex max-w-5xl flex-col items-center justify-center gap-4 py-8 text-center sm:gap-6 sm:py-12 lg:gap-8">
+    <div
+      id="home"
+      className="pointer-events-none relative z-10 mx-auto flex max-w-5xl flex-col items-center justify-center gap-4 py-8 text-center sm:gap-6 sm:py-12 lg:gap-8"
+    >
       <div className="pointer-events-auto relative z-10 w-48 sm:w-56 md:w-72 lg:w-80">
         <img
           src="/mahestzy_nobg.webp"

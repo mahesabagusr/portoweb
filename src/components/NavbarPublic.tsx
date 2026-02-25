@@ -21,25 +21,32 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
   const [activeSection, setActiveSection] = useState<string>('home');
 
   useEffect(() => {
-    const observers: IntersectionObserver[] = [];
+    const sectionIds = NavbarMenu.map(m => m.sectionId);
 
-    NavbarMenu.forEach(({ sectionId }) => {
-      const el = document.getElementById(sectionId);
-      if (!el) return;
+    const getActive = () => {
+      const scrollY = window.scrollY + window.innerHeight * 0.4;
+      let current = sectionIds[0];
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= scrollY) current = id;
+      }
+      setActiveSection(current);
+    };
 
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(sectionId);
-        },
-        { threshold: 0.3 },
-      );
-
-      observer.observe(el);
-      observers.push(observer);
-    });
-
-    return () => observers.forEach(o => o.disconnect());
+    getActive();
+    window.addEventListener('scroll', getActive, { passive: true });
+    return () => window.removeEventListener('scroll', getActive);
   }, []);
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const id = href.replace('#', '');
+    const el = document.getElementById(id);
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  };
 
   return (
     <nav className={`sticky top-8 z-50 mx-auto my-10 w-fit ${className}`}>
@@ -55,10 +62,9 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
                   <a
                     key={item.name}
                     href={item.href}
+                    onClick={e => scrollToSection(e, item.href)}
                     className={`hover:text-primary hover:bg-primary/10 group relative rounded-full px-2 py-2 text-xs transition-all duration-300 sm:px-4 sm:text-sm ${
-                      isActive
-                        ? 'font-bold text-white'
-                        : 'text-foreground/80 font-medium'
+                      isActive ? 'font-bold text-white' : 'text-foreground/80 font-medium'
                     }`}
                   >
                     {item.name}
@@ -68,10 +74,9 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
               })}
             </div>
 
-            <div className="ml-1 h-5 w-px bg-white/20 sm:ml-2" />
-
             <a
               href="#contact"
+              onClick={e => scrollToSection(e, '#contact')}
               className="group relative overflow-hidden rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white transition-all duration-300 hover:bg-white/20 hover:shadow-[0_0_16px_rgba(255,255,255,0.15)] sm:px-4 sm:py-2 sm:text-sm"
             >
               Get in Touch
