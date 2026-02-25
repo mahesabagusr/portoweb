@@ -1,6 +1,6 @@
 import type { Variants } from 'framer-motion';
-import TelkomUni from '@/assets/images/telkomuni.png';
-import TelkomSch from '@/assets/images/telkomsch.png';
+import TelkomUni from '@/assets/images/telkomuni.webp';
+import TelkomSch from '@/assets/images/telkomsch.webp';
 
 export interface EducationItem {
   institution: string;

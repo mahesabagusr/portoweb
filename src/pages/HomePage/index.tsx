@@ -1,6 +1,7 @@
 import Particles from '@/components/background/particles/Particles';
 import Jumbotron from './Components/Jumbotron';
 import Education from './Components/Education';
+import Experience from './Components/Experience';
 
 export default function HomePage(): React.JSX.Element {
   return (
@@ -20,6 +21,7 @@ export default function HomePage(): React.JSX.Element {
 
       <Jumbotron />
       <Education />
+      <Experience />
     </div>
   );
 }
