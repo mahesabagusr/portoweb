@@ -36,7 +36,7 @@ export default function MainLayout(): React.JSX.Element {
       <CursorFollower />
 
       <div className={`relative z-10 flex min-h-screen flex-col transition-opacity duration-500`}>
-        <Navbar className=""></Navbar>
+        <Navbar className="items-center"></Navbar>
         <main className="flex-1">
           <Outlet />
         </main>

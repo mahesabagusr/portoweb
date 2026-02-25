@@ -19,7 +19,7 @@ interface NavbarProps {
 
 export default function Navbar({ className = '' }: NavbarProps): React.JSX.Element {
   return (
-    <nav className={`sticky top-8 z-50 mx-4 my-10 sm:mx-10 lg:mx-110 ${className}`}>
+    <nav className={`sticky top-8 z-50 mx-auto my-10 w-fit ${className}`}>
       <div className="bg-primary/10 border-primary/20 shadow-primary/20 relative overflow-hidden rounded-full border shadow-2xl backdrop-blur-xl">
         <div className="from-primary/5 to-accent/5 pointer-events-none absolute inset-0 bg-gradient-to-br via-transparent"></div>
 
