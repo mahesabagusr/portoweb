@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import ScrollFloat from '@/components/custom/ScrollFloat';
 import GlareHover from '@/components/custom/GlareHover';
-import { Calendar, MapPin } from 'lucide-react';
+import { Calendar, MapPin, ExternalLink } from 'lucide-react';
 import { experienceData, experienceCardVariants } from '@/constants/experience';
 
 export default function Experience(): React.JSX.Element {
@@ -38,6 +38,7 @@ export default function Experience(): React.JSX.Element {
             <motion.div
               key={index}
               className="pointer-events-auto relative z-10 h-full w-full sm:pl-14"
+              style={{ opacity: 0, transform: 'translateY(60px) scale(0.95)' }}
               custom={index}
               initial="offscreen"
               whileInView="onscreen"
@@ -86,6 +87,24 @@ export default function Experience(): React.JSX.Element {
                   <p className="border-t border-white/10 pt-3 text-sm leading-relaxed text-gray-300 sm:text-base">
                     {exp.description}
                   </p>
+
+                  {/* Project Links */}
+                  {exp.links?.length && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {exp.links.map(({ text, href }) => (
+                        <a
+                          key={href}
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white/80 transition-all duration-300 hover:border-white/40 hover:bg-white/20 hover:text-white"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                          {text}
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </GlareHover>
             </motion.div>

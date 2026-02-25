@@ -1,12 +1,10 @@
-import { Github, Linkedin, Mail } from 'lucide-react';
+import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { FaInstagram } from 'react-icons/fa';
-import type { IconType } from 'react-icons';
 
 export interface SocialLink {
   label: string;
   href: string;
-  icon: LucideIcon | IconType;
+  icon: LucideIcon;
   display: string;
 }
 
@@ -40,7 +38,7 @@ export const socialLinks: SocialLink[] = [
   {
     label: 'Instagram',
     href: 'https://instagram.com/mahesabagus.r',
-    icon: FaInstagram,
+    icon: Instagram,
     display: '@mahesabagus.r',
   },
   {

@@ -12,7 +12,7 @@ export default function Education(): React.JSX.Element {
         <div className="text-center">
           <ScrollFloat
             containerClassName="mb-4 "
-            textClassName="text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] !text-5xl xl:!text-6xl "
+            textClassName="text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] sm:!text-5xl xl:!text-6xl "
             scrollStart="top bottom"
             scrollEnd="center center"
           >
@@ -36,6 +36,7 @@ export default function Education(): React.JSX.Element {
             <motion.div
               key={index}
               className="pointer-events-auto relative h-full w-full"
+              style={{ opacity: 0, transform: 'translateY(50px) scale(0.9)' }}
               custom={index}
               initial="offscreen"
               whileInView="onscreen"

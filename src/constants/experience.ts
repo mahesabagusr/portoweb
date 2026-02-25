@@ -6,6 +6,7 @@ export interface ExperienceItem {
   role: string;
   period: string;
   description: string;
+  links?: { text: string; href: string }[];
 }
 
 export const experienceData: ExperienceItem[] = [
@@ -16,6 +17,7 @@ export const experienceData: ExperienceItem[] = [
     period: 'Sept 2025 - Now',
     description:
       'Developing Internify as a backend developer, refactoring the codebase by establishing a clear code system and file structure, and migrating databases from raw SQL to Prisma ORM.',
+    links: [{ text: 'Internify', href: 'https://internify.humicprototyping.com/' }],
   },
   {
     company: 'Google Developer Group on Campus - Telkom University Bandung',

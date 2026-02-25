@@ -1,5 +1,3 @@
-import Photo from '@/assets/images/mahestzy_nobg.png';
-import PhotoWebP from '@/assets/images/mahestzy_nobg.webp';
 import { GlassButton } from '@/components/custom/glass-button';
 import BlurText from '@/components/custom/BlurText';
 import { Github, Linkedin, Instagram, Mail } from 'lucide-react';
@@ -8,19 +6,16 @@ export default function Jumbotron(): React.JSX.Element {
   return (
     <div className="pointer-events-none relative z-10 mx-auto flex max-w-5xl flex-col items-center justify-center gap-4 py-8 text-center sm:gap-6 sm:py-12 lg:gap-8">
       <div className="pointer-events-auto relative z-10 w-48 sm:w-56 md:w-72 lg:w-80">
-        <picture>
-          <source srcSet={PhotoWebP} type="image/webp" />
-          <img
-            src={Photo}
-            alt="Mahesa Bagus Raditya"
-            width={1536}
-            height={1929}
-            fetchPriority="high"
-            decoding="async"
-            className="h-auto w-full scale-110 object-contain drop-shadow-[0_4px_12px_rgba(255,255,255,0.3)] grayscale transition-all duration-500 hover:drop-shadow-[0_4px_16px_rgba(255,255,255,0.5)] hover:grayscale-0"
-            style={{ objectPosition: '50% 20%' }}
-          />
-        </picture>
+        <img
+          src="/mahestzy_nobg.webp"
+          alt="Mahesa Bagus Raditya"
+          width={1536}
+          height={1929}
+          fetchPriority="high"
+          decoding="async"
+          className="h-auto w-full scale-110 object-contain drop-shadow-[0_4px_12px_rgba(255,255,255,0.3)] grayscale transition-all duration-500 hover:drop-shadow-[0_4px_16px_rgba(255,255,255,0.5)] hover:grayscale-0"
+          style={{ objectPosition: '50% 20%' }}
+        />
       </div>
 
       <div className="relative z-20 -mt-6 flex w-full items-center justify-center sm:-mt-8 md:-mt-12 lg:-mt-20">
@@ -30,9 +25,6 @@ export default function Jumbotron(): React.JSX.Element {
           delay={150}
           animateBy="words"
           direction="top"
-          onAnimationComplete={() => {
-            console.log('Animation Complete');
-          }}
         />
       </div>
 
