@@ -101,7 +101,7 @@ export default function Jumbotron(): React.JSX.Element {
             Download CV
           </GlassButton>
           <GlassButton className="w-full max-w-xs px-6 py-4 text-base sm:w-auto sm:max-w-none sm:px-8 sm:py-6 sm:text-lg">
-            Contact Me
+            Get in Touch
           </GlassButton>
         </div>
       </div>
