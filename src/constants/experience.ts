@@ -25,7 +25,7 @@ export const experienceData: ExperienceItem[] = [
     role: 'Core Team - Head of Mentor & Curriculum',
     period: '2025 - Now',
     description:
-      "Leading the mentor & curriculum division by teaching intermediate JavaScript and ReactJS with Tailwind 4, creating a PRD to guide the study group's major assignments, and assessing all major assignments alongside other mentors.",
+      'Led the Mentor & Curriculum division for 800+ members, overseeing the educational strategy and specialized Study Groups across 4 technical divisions. designed the "Grand Task" project framework and evaluation metrics to ensure high-quality learning outcomes for all participants.',
   },
   {
     company: 'Google Developer Group on Campus - Telkom University Bandung',

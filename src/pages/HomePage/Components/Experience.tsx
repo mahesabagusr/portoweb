@@ -7,7 +7,10 @@ import { experienceData, experienceCardVariants } from '@/constants/experience';
 
 export default function Experience(): React.JSX.Element {
   return (
-    <section className="pointer-events-none relative z-10 mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+    <section
+      id="experience"
+      className="pointer-events-none relative z-10 mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20"
+    >
       <div className="space-y-8 sm:space-y-12">
         {/* Heading */}
         <div className="text-center">
@@ -37,7 +40,7 @@ export default function Experience(): React.JSX.Element {
           {experienceData.map((exp, index) => (
             <motion.div
               key={index}
-              className="pointer-events-auto relative z-10 h-full w-full sm:pl-14"
+              className="pointer-events-auto relative z-10 h-full w-full"
               style={{ opacity: 0, transform: 'translateY(60px) scale(0.95)' }}
               custom={index}
               initial="offscreen"
@@ -45,8 +48,6 @@ export default function Experience(): React.JSX.Element {
               viewport={{ once: false, amount: 0.2 }}
               variants={experienceCardVariants}
             >
-              <span className="absolute top-22 left-[13px] hidden h-3 w-3 rounded-full border-2 border-white/40 bg-white/20 sm:left-[19px] sm:block" />
-
               <GlareHover
                 width="100%"
                 height="auto"
