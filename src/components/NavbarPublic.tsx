@@ -90,7 +90,6 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
                 );
               })}
             </div>
-            <div className="ml-2 h-5 w-px bg-white/20" />
             <a
               href="#contact"
               onClick={e => scrollToSection(e, '#contact')}
