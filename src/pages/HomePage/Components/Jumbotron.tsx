@@ -1,3 +1,5 @@
+'use client';
+
 import { GlassButton } from '@/components/custom/glass-button';
 import BlurText from '@/components/custom/BlurText';
 import { Github, Linkedin, Instagram, Mail } from 'lucide-react';

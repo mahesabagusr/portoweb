@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import ScrollFloat from '@/components/custom/ScrollFloat';
 import GlareHover from '@/components/custom/GlareHover';
@@ -62,13 +65,12 @@ export default function Education(): React.JSX.Element {
                 <div className="p-6 sm:p-8">
                   <div className="flex items-start gap-4 sm:gap-6">
                     {edu.logo && (
-                      <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-xl bg-white/10 p-4 backdrop-blur-sm sm:h-24 sm:w-24">
-                        <img
+                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-white/10 p-4 backdrop-blur-sm sm:h-24 sm:w-24">
+                        <Image
                           src={edu.logo}
                           alt={`${edu.institution} logo`}
                           width={96}
                           height={96}
-                          decoding="async"
                           className="h-full w-full object-contain brightness-0 invert"
                         />
                       </div>
@@ -79,7 +81,7 @@ export default function Education(): React.JSX.Element {
                         {edu.degree}
                       </p>
                       <div className="flex items-center justify-center gap-2 text-sm text-gray-400 sm:text-base">
-                        <Calendar className="h-4 w-4 flex-shrink-0 sm:h-5 sm:w-5" />
+                        <Calendar className="h-4 w-4 shrink-0 sm:h-5 sm:w-5" />
                         <span className="font-medium">{edu.period}</span>
                       </div>
                     </div>

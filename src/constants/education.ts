@@ -1,12 +1,13 @@
 import type { Variants } from 'framer-motion';
 import TelkomUni from '@/assets/images/telkomuni.webp';
 import TelkomSch from '@/assets/images/telkomsch.webp';
+import { StaticImageData } from 'next/image';
 
 export interface EducationItem {
   institution: string;
   degree: string;
   period: string;
-  logo?: string;
+  logo: StaticImageData;
 }
 
 export const educationData: EducationItem[] = [
