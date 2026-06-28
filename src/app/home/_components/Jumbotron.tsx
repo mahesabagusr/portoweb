@@ -32,13 +32,13 @@ export default function Jumbotron(): React.JSX.Element {
         />
       </div>
 
-      <div className="relative z-20 w-full max-w-2xl space-y-6 px-4 sm:px-6">
-        <p className="animate-fade-in text-body text-base leading-relaxed font-normal opacity-0 [animation-delay:0.5s] [animation-fill-mode:forwards] sm:text-lg">
+      <div className="relative z-20 w-full  space-y-6 px-4 sm:px-6">
+        <p className="animate-fade-in text-body fill-mode-[forwards] text-base leading-relaxed font-normal opacity-0 [animation-delay:0.5s] sm:text-lg">
           Undergraduate Informatics Student{' '}
           <span className="text-ink font-medium">@ Telkom University Bandung</span>
         </p>
 
-        <div className="animate-fade-in pointer-events-auto flex flex-wrap items-center justify-center gap-x-5 gap-y-3 opacity-0 [animation-delay:0.7s] [animation-fill-mode:forwards]">
+        <div className="animate-fade-in fill-mode-[forwards] pointer-events-auto flex flex-wrap items-center justify-center gap-x-5 gap-y-3 opacity-0 [animation-delay:0.7s]">
           <a
             href="https://github.com/mahesabagusr"
             target="_blank"

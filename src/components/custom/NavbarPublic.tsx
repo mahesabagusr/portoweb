@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 
 interface NavbarMenuItem {
@@ -23,7 +24,7 @@ interface NavbarProps {
 export default function Navbar({ className = '' }: NavbarProps): React.JSX.Element {
   const [activeSection, setActiveSection] = useState<string>('home');
   const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const sectionIds = NavbarMenu.map(m => m.sectionId);
@@ -60,21 +61,25 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
     const el = document.getElementById(id);
     if (!el) return;
     if (window.lenis) {
-      window.lenis.scrollTo(el, { offset: -80 });
+      window.lenis.scrollTo(el, { offset: -100 });
     } else {
-      const top = el.getBoundingClientRect().top + window.scrollY - 80;
+      const top = el.getBoundingClientRect().top + window.scrollY - 100;
       window.scrollTo({ top, behavior: 'smooth' });
     }
   };
 
   return (
-    <nav
-      ref={menuRef}
-      className={`sticky top-6 z-50 mx-auto my-6 w-fit ${className}`}
-    >
+    <nav ref={menuRef} className={`sticky top-6 z-50 mx-auto my-6 w-fit ${className}`}>
       {/* Desktop floating pill */}
-      <div className="bg-canvas/85 border-hairline hidden rounded-full border px-2 py-1.5 backdrop-blur-md sm:block">
-        <div className="flex items-center gap-1">
+      <div className="bg-canvas/85 border-hairline hidden rounded-full border px-3 py-2.5 backdrop-blur-md sm:block">
+        <div className="flex items-center gap-2">
+          <a
+            href="#home"
+            onClick={e => scrollToSection(e, '#home')}
+            className="mr-1 flex items-center gap-2 rounded-full px-2 transition-opacity hover:opacity-80"
+          >
+            <Image src="/logo.svg" alt="MBR Logo" width={40} height={40} className="h-9 w-9" />
+          </a>
           {NavbarMenu.map(item => {
             const isActive = activeSection === item.sectionId;
             return (
@@ -82,7 +87,7 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
                 key={item.name}
                 href={item.href}
                 onClick={e => scrollToSection(e, item.href)}
-                className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors duration-200 ${
+                className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-200 ${
                   isActive ? 'text-ink bg-hairline-soft' : 'text-body hover:text-ink'
                 }`}
               >
@@ -95,7 +100,7 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
           <a
             href="#contact"
             onClick={e => scrollToSection(e, '#contact')}
-            className="bg-brand hover:bg-brand-active text-on-brand ml-1 rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-200"
+            className="bg-brand hover:bg-brand-active text-on-brand ml-1 rounded-full px-6 py-2.5 text-sm font-medium transition-colors duration-200"
           >
             Get in Touch
           </a>
@@ -104,11 +109,21 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
 
       {/* Mobile pill + dropdown */}
       <div className="relative sm:hidden">
-        <div className="bg-canvas/85 border-hairline flex items-center rounded-full border p-1.5 backdrop-blur-md">
+        <div className="bg-canvas/85 border-hairline flex items-center gap-2 rounded-full border p-2.5 backdrop-blur-md">
+          <a
+            href="#home"
+            onClick={e => scrollToSection(e, '#home')}
+            className="flex items-center gap-2 rounded-full px-1.5 transition-opacity hover:opacity-80"
+          >
+            <Image src="/logo.svg" alt="MBR Logo" width={28} height={28} className="h-7 w-7" />
+            <span className="text-ink text-sm font-semibold tracking-tight">Mahestzy</span>
+          </a>
+          <div className="bg-hairline h-6 w-px" />
           <button
             onClick={() => setIsOpen(v => !v)}
-            className="text-ink hover:bg-hairline-soft relative flex h-9 w-9 items-center justify-center rounded-full transition-colors duration-200"
+            className="text-ink hover:bg-hairline-soft relative flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-200"
             aria-label="Toggle menu"
+            aria-expanded={isOpen}
           >
             <Menu
               className={`absolute h-5 w-5 transition-all duration-300 ${isOpen ? 'scale-75 rotate-90 opacity-0' : 'scale-100 rotate-0 opacity-100'}`}
@@ -121,7 +136,7 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
 
         {/* Animated dropdown */}
         <div
-          className={`bg-canvas/95 border-hairline absolute left-1/2 mt-2 w-48 -translate-x-1/2 overflow-hidden rounded-2xl border backdrop-blur-md transition-all duration-300 ease-out ${
+          className={`bg-canvas/95 border-hairline absolute left-1/2 mt-2 w-56 -translate-x-1/2 overflow-hidden rounded-2xl border backdrop-blur-md transition-all duration-300 ease-out ${
             isOpen
               ? 'pointer-events-auto translate-y-0 opacity-100'
               : 'pointer-events-none -translate-y-2 opacity-0'
@@ -135,8 +150,8 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
                   key={item.name}
                   href={item.href}
                   onClick={e => scrollToSection(e, item.href)}
-                  className={`px-5 py-3 text-sm transition-colors duration-200 ${
-                    isActive ? 'text-ink bg-hairline-soft font-medium' : 'text-body hover:text-ink font-medium'
+                  className={`px-5 py-3 text-sm font-medium transition-colors duration-200 ${
+                    isActive ? 'text-ink bg-hairline-soft' : 'text-body hover:text-ink'
                   }`}
                 >
                   {item.name}
@@ -147,7 +162,7 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
             <a
               href="#contact"
               onClick={e => scrollToSection(e, '#contact')}
-              className="bg-brand hover:bg-brand-active text-on-brand mx-3 mb-1 rounded-full px-4 py-2 text-center text-sm font-medium transition-colors duration-200"
+              className="bg-brand hover:bg-brand-active text-on-brand mx-3 mb-1 rounded-full px-4 py-2.5 text-center text-sm font-medium transition-colors duration-200"
             >
               Get in Touch
             </a>
