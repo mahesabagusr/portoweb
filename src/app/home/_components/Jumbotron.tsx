@@ -25,7 +25,7 @@ export default function Jumbotron(): React.JSX.Element {
       <div className="relative z-20 -mt-4 flex w-full items-center justify-center sm:-mt-6 md:-mt-8 lg:-mt-16">
         <BlurText
           text="Mahesa Bagus Raditya"
-          className="display-mega text-ink justify-center px-2 text-center text-[34px] font-medium sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[80px]"
+          className="display-mega text-ink justify-center px-2 text-center text-[34px] font-medium sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[70px]"
           delay={150}
           animateBy="words"
           direction="top"
@@ -81,7 +81,7 @@ export default function Jumbotron(): React.JSX.Element {
 
         <div className="pointer-events-auto flex flex-col flex-wrap items-center justify-center gap-3 pt-2 sm:flex-row sm:gap-4">
           <GlassButton
-            variant="download"
+            variant="default"
             className="w-full sm:w-auto"
             onClick={() => {
               window.open(
