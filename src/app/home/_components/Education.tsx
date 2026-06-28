@@ -26,12 +26,11 @@ function EducationCard({ edu, index }: { edu: EducationItem; index: number }) {
       onHoverEnd={() => hasGallery && setOpen(false)}
       onTap={() => hasGallery && setOpen(v => !v)}
     >
-      {/* "Moments" popup — photos fan out like polaroids above the card */}
       {hasGallery && (
         <AnimatePresence>
           {open && (
             <motion.div
-              className="pointer-events-none absolute -top-3 left-1/2 z-30 flex -translate-x-1/2 -translate-y-full items-end"
+              className="pointer-events-none absolute -top-2 left-1/2 z-30 flex w-80 max-w-md -translate-x-1/2 -translate-y-full items-end gap-3 sm:gap-12"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -40,7 +39,7 @@ function EducationCard({ edu, index }: { edu: EducationItem; index: number }) {
               {gallery.map((src, i) => (
                 <motion.div
                   key={i}
-                  className="bg-surface border-hairline -ml-5 rounded-lg border p-1.5 shadow-sm first:ml-0 sm:-ml-4"
+                  className="bg-surface border-hairline-soft -ml-10 rounded-lg border p-1 first:ml-0 sm:-ml-28"
                   style={{ zIndex: i }}
                   initial={{ opacity: 0, y: 24, rotate: 0, scale: 0.85 }}
                   animate={{ opacity: 1, y: 0, rotate: (i - mid) * 7, scale: 1 }}
@@ -50,9 +49,10 @@ function EducationCard({ edu, index }: { edu: EducationItem; index: number }) {
                   <Image
                     src={src}
                     alt={`${edu.institution} moment ${i + 1}`}
-                    width={160}
-                    height={160}
-                    className="h-20 w-20 rounded-md object-cover sm:h-28 sm:w-28"
+                    width={880}
+                    height={256}
+                    quality={90}
+                    className="h-24 w-40 rounded-md object-cover sm:h-32 sm:w-110"
                   />
                 </motion.div>
               ))}
