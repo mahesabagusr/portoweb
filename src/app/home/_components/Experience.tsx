@@ -5,22 +5,6 @@ import ScrollFloat from '@/components/custom/ScrollFloat';
 import { ExternalLink } from 'lucide-react';
 import { experienceData } from '@/constants/experience';
 
-// Tech name -> Simple Icons logo. Names not listed fall back to a text pill.
-const techIcons: Record<string, string> = {
-  'Node.js': 'https://cdn.simpleicons.org/nodedotjs/5FA04E',
-  'Express.js': 'https://cdn.simpleicons.org/express/26251e',
-  Prisma: 'https://cdn.simpleicons.org/prisma/2D3748',
-  JavaScript: 'https://cdn.simpleicons.org/javascript/F7DF1E',
-  React: 'https://cdn.simpleicons.org/react/61DAFB',
-  'Tailwind CSS': 'https://cdn.simpleicons.org/tailwindcss/06B6D4',
-  Figma: 'https://cdn.simpleicons.org/figma/F24E1E',
-  Photoshop: 'https://cdn.simpleicons.org/adobephotoshop/31A8FF',
-  Illustrator: 'https://cdn.simpleicons.org/adobeillustrator/FF9A00',
-  Mocha: 'https://cdn.simpleicons.org/mocha/8D6748',
-  Chai: 'https://cdn.simpleicons.org/chai/A30701',
-  Git: 'https://cdn.simpleicons.org/git/F05032',
-};
-
 function ExperienceCard({ exp }: { exp: (typeof experienceData)[number] }) {
   return (
     <div className="bg-surface border-hairline hover:border-hairline-strong flex w-[300px] shrink-0 flex-col rounded-xl border p-5 transition-transform duration-300 ease-out hover:scale-[1.04] sm:w-[360px] sm:p-6">
@@ -33,32 +17,6 @@ function ExperienceCard({ exp }: { exp: (typeof experienceData)[number] }) {
 
       {/* Description */}
       <p className="text-body mt-3 line-clamp-3 text-sm leading-relaxed">{exp.description}</p>
-
-      {/* Tools / languages as logos */}
-      {exp.tech?.length && (
-        <div className="mt-4 flex flex-wrap items-center gap-2.5">
-          {exp.tech.map(t =>
-            techIcons[t] ? (
-              <img
-                key={t}
-                src={techIcons[t]}
-                alt={t}
-                title={t}
-                className="h-6 w-6"
-                loading="lazy"
-              />
-            ) : (
-              <span
-                key={t}
-                title={t}
-                className="border-hairline bg-canvas-soft text-body rounded-md border px-2 py-0.5 text-xs font-medium"
-              >
-                {t}
-              </span>
-            )
-          )}
-        </div>
-      )}
 
       {/* Project Links */}
       {exp.links?.length && (
