@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import ScrollFloat from '@/components/custom/ScrollFloat';
 import { ExternalLink } from 'lucide-react';
 import { experienceData } from '@/constants/experience';
@@ -82,14 +82,85 @@ function ExperienceCard({ exp }: { exp: (typeof experienceData)[number] }) {
 }
 
 export default function Experience(): React.JSX.Element {
-  // Duplicate the list so the marquee can loop seamlessly.
-  const loop = [...experienceData, ...experienceData];
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const pausedRef = useRef(false);
+  const draggingRef = useRef(false);
+  const periodRef = useRef(0);
+
+  // Keep scrollLeft inside the middle copies -> seamless infinite wrap.
+  const normalize = (el: HTMLDivElement) => {
+    const p = periodRef.current;
+    if (p <= 0) return;
+    while (el.scrollLeft < p) el.scrollLeft += p;
+    while (el.scrollLeft >= 2 * p) el.scrollLeft -= p;
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    // Exact repeat distance = distance between the start of two identical copies.
+    const computePeriod = () => {
+      const a = el.children[0] as HTMLElement | undefined;
+      const b = el.children[1] as HTMLElement | undefined;
+      if (!a || !b) return;
+      periodRef.current = b.offsetLeft - a.offsetLeft;
+      el.scrollLeft = periodRef.current; // start in the middle copy
+    };
+    computePeriod();
+    window.addEventListener('resize', computePeriod);
+
+    // Auto-scroll left; pauses on hover/drag.
+    let raf = 0;
+    const tick = () => {
+      if (!pausedRef.current && !draggingRef.current) {
+        el.scrollLeft += 0.5;
+        normalize(el);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    // Wheel -> horizontal (non-passive so we can prevent vertical page scroll).
+    const onWheel = (e: WheelEvent) => {
+      const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (delta === 0) return;
+      e.preventDefault();
+      el.scrollLeft += delta;
+      normalize(el);
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', computePeriod);
+      el.removeEventListener('wheel', onWheel);
+    };
+  }, []);
+
+  // Drag to scroll (mouse), tracked on the document for reliability.
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    draggingRef.current = true;
+    const startX = e.clientX;
+    const startLeft = el.scrollLeft;
+
+    const onMove = (ev: MouseEvent) => {
+      el.scrollLeft = startLeft - (ev.clientX - startX);
+      normalize(el);
+    };
+    const onUp = () => {
+      draggingRef.current = false;
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  };
 
   return (
-    <section
-      id="experience"
-      className="pointer-events-none relative z-10 w-full py-16 sm:py-20"
-    >
+    <section id="experience" className="relative z-10 w-full py-16 sm:py-20">
       <div className="space-y-8 sm:space-y-12">
         {/* Heading */}
         <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
@@ -104,15 +175,25 @@ export default function Experience(): React.JSX.Element {
           </ScrollFloat>
         </div>
 
-        {/* Marquee — cards running to the left */}
-        <div className="group pointer-events-auto relative overflow-hidden">
+        {/* Scrollable strip — drag with mouse or scroll wheel, loops infinitely */}
+        <div className="relative">
           {/* Edge fades */}
           <div className="from-canvas pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r to-transparent sm:w-24" />
           <div className="from-canvas pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l to-transparent sm:w-24" />
 
-          <div className="animate-marquee flex w-max gap-4 py-4 group-hover:[animation-play-state:paused] sm:gap-6">
-            {loop.map((exp, index) => (
-              <ExperienceCard key={exp.company + index} exp={exp} />
+          <div
+            ref={scrollRef}
+            onMouseDown={onMouseDown}
+            onMouseEnter={() => (pausedRef.current = true)}
+            onMouseLeave={() => (pausedRef.current = false)}
+            className="no-scrollbar flex w-full cursor-grab gap-4 overflow-x-auto overscroll-x-contain py-4 [scroll-behavior:auto] [touch-action:pan-x] select-none active:cursor-grabbing sm:gap-6"
+          >
+            {[0, 1, 2, 3].map(copy => (
+              <div key={copy} className="flex shrink-0 gap-4 sm:gap-6" aria-hidden={copy !== 0}>
+                {experienceData.map((exp, index) => (
+                  <ExperienceCard key={exp.company + index} exp={exp} />
+                ))}
+              </div>
             ))}
           </div>
         </div>
