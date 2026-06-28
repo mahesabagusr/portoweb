@@ -82,73 +82,84 @@ function ExperienceCard({ exp }: { exp: (typeof experienceData)[number] }) {
 }
 
 export default function Experience(): React.JSX.Element {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const offsetRef = useRef(0);
+  const periodRef = useRef(0);
   const pausedRef = useRef(false);
   const draggingRef = useRef(false);
-  const periodRef = useRef(0);
-
-  // Keep scrollLeft inside the middle copies -> seamless infinite wrap.
-  const normalize = (el: HTMLDivElement) => {
-    const p = periodRef.current;
-    if (p <= 0) return;
-    while (el.scrollLeft < p) el.scrollLeft += p;
-    while (el.scrollLeft >= 2 * p) el.scrollLeft -= p;
-  };
 
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
+    const track = trackRef.current;
+    if (!track) return;
 
-    // Exact repeat distance = distance between the start of two identical copies.
+    // One copy's repeat distance, measured directly from the DOM.
     const computePeriod = () => {
-      const a = el.children[0] as HTMLElement | undefined;
-      const b = el.children[1] as HTMLElement | undefined;
-      if (!a || !b) return;
-      periodRef.current = b.offsetLeft - a.offsetLeft;
-      el.scrollLeft = periodRef.current; // start in the middle copy
+      const a = track.children[0] as HTMLElement | undefined;
+      const b = track.children[1] as HTMLElement | undefined;
+      if (a && b) periodRef.current = b.offsetLeft - a.offsetLeft;
     };
+
+    // Apply offset as a transform (never clamps -> no end, no snap-back).
+    const apply = () => {
+      const p = periodRef.current;
+      if (p <= 0) return;
+      let o = offsetRef.current % p;
+      if (o < 0) o += p;
+      offsetRef.current = o;
+      track.style.transform = `translate3d(${-o}px, 0, 0)`;
+    };
+
     computePeriod();
     window.addEventListener('resize', computePeriod);
 
-    // Auto-scroll left; pauses on hover/drag.
     let raf = 0;
     const tick = () => {
+      if (periodRef.current <= 0) computePeriod();
       if (!pausedRef.current && !draggingRef.current) {
-        el.scrollLeft += 0.5;
-        normalize(el);
+        offsetRef.current += 0.5;
+        apply();
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
 
-    // Wheel -> horizontal (non-passive so we can prevent vertical page scroll).
+    // Wheel -> horizontal movement.
     const onWheel = (e: WheelEvent) => {
       const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
       if (delta === 0) return;
       e.preventDefault();
-      el.scrollLeft += delta;
-      normalize(el);
+      offsetRef.current += delta;
+      apply();
     };
-    el.addEventListener('wheel', onWheel, { passive: false });
+    track.addEventListener('wheel', onWheel, { passive: false });
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', computePeriod);
-      el.removeEventListener('wheel', onWheel);
+      track.removeEventListener('wheel', onWheel);
     };
   }, []);
 
-  // Drag to scroll (mouse), tracked on the document for reliability.
+  // Drag to move (mouse), tracked on the document for reliability.
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = scrollRef.current;
-    if (!el) return;
+    const track = trackRef.current;
+    if (!track) return;
     draggingRef.current = true;
     const startX = e.clientX;
-    const startLeft = el.scrollLeft;
+    const startOffset = offsetRef.current;
+
+    const applyNow = () => {
+      const p = periodRef.current;
+      if (p <= 0) return;
+      let o = offsetRef.current % p;
+      if (o < 0) o += p;
+      offsetRef.current = o;
+      track.style.transform = `translate3d(${-o}px, 0, 0)`;
+    };
 
     const onMove = (ev: MouseEvent) => {
-      el.scrollLeft = startLeft - (ev.clientX - startX);
-      normalize(el);
+      offsetRef.current = startOffset + (startX - ev.clientX);
+      applyNow();
     };
     const onUp = () => {
       draggingRef.current = false;
@@ -175,20 +186,20 @@ export default function Experience(): React.JSX.Element {
           </ScrollFloat>
         </div>
 
-        {/* Scrollable strip — drag with mouse or scroll wheel, loops infinitely */}
-        <div className="relative">
+        {/* Strip — drag with mouse or scroll wheel, loops infinitely (transform) */}
+        <div className="relative overflow-hidden">
           {/* Edge fades */}
           <div className="from-canvas pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r to-transparent sm:w-24" />
           <div className="from-canvas pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l to-transparent sm:w-24" />
 
           <div
-            ref={scrollRef}
+            ref={trackRef}
             onMouseDown={onMouseDown}
             onMouseEnter={() => (pausedRef.current = true)}
             onMouseLeave={() => (pausedRef.current = false)}
-            className="no-scrollbar flex w-full cursor-grab gap-4 overflow-x-auto overscroll-x-contain py-4 [scroll-behavior:auto] [touch-action:pan-x] select-none active:cursor-grabbing sm:gap-6"
+            className="flex w-max cursor-grab gap-4 py-4 will-change-transform select-none active:cursor-grabbing sm:gap-6"
           >
-            {[0, 1, 2, 3].map(copy => (
+            {[0, 1, 2].map(copy => (
               <div key={copy} className="flex shrink-0 gap-4 sm:gap-6" aria-hidden={copy !== 0}>
                 {experienceData.map((exp, index) => (
                   <ExperienceCard key={exp.company + index} exp={exp} />
