@@ -1,69 +1,65 @@
-# React + TypeScript + Vite
+# Portofolio Gacor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio website **MahesTzy** (Mahesa Bagus Raditya), dibangun dengan **Next.js 16 (App Router)**, React 19, TypeScript, dan Tailwind CSS v4.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Framework:** [Next.js 16](https://nextjs.org/) (App Router) + Turbopack
+- **Bahasa:** TypeScript
+- **UI:** React 19, Tailwind CSS v4, [shadcn/ui](https://ui.shadcn.com/) (Radix UI), `lucide-react`
+- **Animasi & Efek:** Framer Motion / `motion`, GSAP (`@gsap/react`), Lenis (smooth scroll), OGL (background particles)
+- **Font:** Plus Jakarta Sans (`@fontsource-variable`)
+- **Image Optimization:** `sharp`
 
-## Expanding the ESLint configuration
+## Persyaratan
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js 18.18+ (disarankan LTS terbaru)
+- npm (lockfile menggunakan `package-lock.json`)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Menjalankan Project
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+```bash
+# install dependency
+npm install
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# development (dengan Turbopack)
+npm run dev
+
+# build untuk produksi
+npm run build
+
+# jalankan hasil build produksi
+npm run start
+
+# lint
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Aplikasi berjalan di http://localhost:3000. Route `/` otomatis redirect ke `/home`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Struktur Folder
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├─ app/                  # App Router
+│  ├─ layout.tsx         # Root layout (Navbar, Footer, Lenis, CursorFollower)
+│  ├─ page.tsx           # Redirect ke /home
+│  ├─ not-found.tsx      # Halaman 404
+│  ├─ globals.css        # Global styles + Tailwind
+│  └─ home/
+│     ├─ page.tsx        # Halaman utama
+│     └─ _components/     # Jumbotron, Education, Experience
+├─ components/
+│  ├─ custom/             # Navbar, Footer, LenisProvider, CursorFollower
+│  ├─ ui/                 # Komponen shadcn/ui
+│  └─ background/         # Background particles (OGL)
+├─ constants/             # Data (education, experience, footer)
+├─ lib/                   # Utilities (cn, dll)
+└─ assets/                # Aset lokal
+```
+
+## Konfigurasi
+
+- `next.config.ts` — image formats (webp/avif) & konfigurasi Turbopack
+- `components.json` — konfigurasi shadcn/ui
+- `eslint.config.js`, `.prettierrc` — linting & formatting

@@ -60,9 +60,9 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
     const el = document.getElementById(id);
     if (!el) return;
     if (window.lenis) {
-      window.lenis.scrollTo(el, { offset: -100 });
+      window.lenis.scrollTo(el, { offset: -80 });
     } else {
-      const top = el.getBoundingClientRect().top + window.scrollY - 100;
+      const top = el.getBoundingClientRect().top + window.scrollY - 80;
       window.scrollTo({ top, behavior: 'smooth' });
     }
   };
@@ -70,96 +70,96 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
   return (
     <nav
       ref={menuRef}
-      className={`sticky top-8 z-50 my-10 ml-4 w-fit sm:mr-auto sm:ml-auto ${className}`}
+      className={`bg-canvas/85 border-hairline sticky top-0 z-50 w-full border-b backdrop-blur-md ${className}`}
     >
-      {/* Desktop pill */}
-      <div className="bg-primary/10 border-primary/20 shadow-primary/20 relative hidden overflow-hidden rounded-full border shadow-2xl backdrop-blur-xl sm:block">
-        <div className="from-primary/5 to-accent/5 pointer-events-none absolute inset-0 bg-gradient-to-br via-transparent" />
-        <div className="relative mx-auto px-6 lg:px-8">
-          <div className="flex h-16 items-center gap-2">
-            <div className="flex items-center space-x-2">
-              {NavbarMenu.map(item => {
-                const isActive = activeSection === item.sectionId;
-                return (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    onClick={e => scrollToSection(e, item.href)}
-                    className={`hover:text-primary hover:bg-primary/10 group relative rounded-full px-4 py-2 text-sm transition-all duration-300 ${
-                      isActive ? 'font-bold text-white' : 'text-foreground/80 font-medium'
-                    }`}
-                  >
-                    {item.name}
-                    <span className="bg-primary/20 absolute inset-0 rounded-full opacity-0 blur-sm transition-opacity duration-300 group-hover:opacity-100" />
-                  </a>
-                );
-              })}
-            </div>
-            <a
-              href="#contact"
-              onClick={e => scrollToSection(e, '#contact')}
-              className="group relative overflow-hidden rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/20 hover:shadow-[0_0_16px_rgba(255,255,255,0.15)]"
-            >
-              Get in Touch
-              <span className="absolute inset-0 rounded-full opacity-0 ring-1 ring-white/30 transition-opacity duration-300 group-hover:opacity-100" />
-            </a>
-          </div>
+      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Wordmark — brand orange dot + ink text */}
+        <a
+          href="#home"
+          onClick={e => scrollToSection(e, '#home')}
+          className="flex items-center gap-2"
+          aria-label="MahesTzy home"
+        >
+          <span className="bg-brand inline-block h-2.5 w-2.5 rounded-full" />
+          <span className="text-ink text-[15px] font-semibold tracking-tight">MahesTzy</span>
+        </a>
+
+        {/* Desktop menu */}
+        <div className="hidden items-center gap-1 sm:flex">
+          {NavbarMenu.map(item => {
+            const isActive = activeSection === item.sectionId;
+            return (
+              <a
+                key={item.name}
+                href={item.href}
+                onClick={e => scrollToSection(e, item.href)}
+                className={`rounded-md px-3 py-2 text-sm transition-colors duration-200 ${
+                  isActive
+                    ? 'text-ink font-medium'
+                    : 'text-body hover:text-ink font-medium'
+                }`}
+              >
+                {item.name}
+              </a>
+            );
+          })}
         </div>
-        <div className="via-primary/50 absolute right-0 bottom-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent" />
+
+        {/* Right CTA — scarce Cursor Orange */}
+        <div className="hidden items-center gap-3 sm:flex">
+          <a
+            href="#contact"
+            onClick={e => scrollToSection(e, '#contact')}
+            className="bg-brand hover:bg-brand-active text-on-brand rounded-md px-[18px] py-2.5 text-sm font-medium transition-colors duration-200"
+          >
+            Get in Touch
+          </a>
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          onClick={() => setIsOpen(v => !v)}
+          className="text-ink relative flex h-10 w-10 items-center justify-center sm:hidden"
+          aria-label="Toggle menu"
+        >
+          <Menu
+            className={`absolute h-5 w-5 transition-all duration-300 ${isOpen ? 'scale-75 rotate-90 opacity-0' : 'scale-100 rotate-0 opacity-100'}`}
+          />
+          <X
+            className={`absolute h-5 w-5 transition-all duration-300 ${isOpen ? 'scale-100 rotate-0 opacity-100' : 'scale-75 -rotate-90 opacity-0'}`}
+          />
+        </button>
       </div>
 
-      {/* Mobile hamburger */}
-      <div className="relative sm:hidden">
-        <div className="bg-primary/10 border-primary/20 shadow-primary/20 relative overflow-hidden rounded-full border shadow-2xl backdrop-blur-xl">
-          <div className="from-primary/5 to-accent/5 pointer-events-none absolute inset-0 bg-gradient-to-br via-transparent" />
-          <button
-            onClick={() => setIsOpen(v => !v)}
-            className="relative flex h-12 w-12 items-center justify-center text-white transition-colors duration-200 hover:bg-white/10"
-            aria-label="Toggle menu"
+      {/* Mobile dropdown */}
+      <div
+        className={`bg-canvas border-hairline overflow-hidden border-t transition-all duration-300 ease-out sm:hidden ${
+          isOpen ? 'max-h-96 opacity-100' : 'pointer-events-none max-h-0 opacity-0'
+        }`}
+      >
+        <div className="flex flex-col px-4 py-2">
+          {NavbarMenu.map(item => {
+            const isActive = activeSection === item.sectionId;
+            return (
+              <a
+                key={item.name}
+                href={item.href}
+                onClick={e => scrollToSection(e, item.href)}
+                className={`rounded-md px-3 py-3 text-sm transition-colors duration-200 ${
+                  isActive ? 'text-ink font-medium' : 'text-body hover:text-ink font-medium'
+                }`}
+              >
+                {item.name}
+              </a>
+            );
+          })}
+          <a
+            href="#contact"
+            onClick={e => scrollToSection(e, '#contact')}
+            className="bg-brand hover:bg-brand-active text-on-brand mt-2 mb-2 rounded-md px-4 py-2.5 text-center text-sm font-medium transition-colors duration-200"
           >
-            <Menu
-              className={`absolute h-5 w-5 transition-all duration-300 ${isOpen ? 'scale-75 rotate-90 opacity-0' : 'scale-100 rotate-0 opacity-100'}`}
-            />
-            <X
-              className={`absolute h-5 w-5 transition-all duration-300 ${isOpen ? 'scale-100 rotate-0 opacity-100' : 'scale-75 -rotate-90 opacity-0'}`}
-            />
-          </button>
-        </div>
-
-        {/* Animated dropdown */}
-        <div
-          className={`bg-primary/10 border-primary/20 shadow-primary/20 absolute left-0 mt-2 w-48 overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-xl transition-all duration-300 ease-out ${
-            isOpen
-              ? 'pointer-events-auto translate-y-0 opacity-100'
-              : 'pointer-events-none -translate-y-2 opacity-0'
-          }`}
-        >
-          <div className="from-primary/5 to-accent/5 pointer-events-none absolute inset-0 bg-gradient-to-br via-transparent" />
-          <div className="relative flex flex-col py-2">
-            {NavbarMenu.map(item => {
-              const isActive = activeSection === item.sectionId;
-              return (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  onClick={e => scrollToSection(e, item.href)}
-                  className={`px-5 py-3 text-sm transition-colors duration-200 hover:bg-white/10 ${
-                    isActive ? 'font-bold text-white' : 'font-medium text-white/70'
-                  }`}
-                >
-                  {item.name}
-                </a>
-              );
-            })}
-            <div className="mx-4 my-2 h-px bg-white/10" />
-            <a
-              href="#contact"
-              onClick={e => scrollToSection(e, '#contact')}
-              className="mx-3 mb-1 rounded-full bg-white/10 px-4 py-2 text-center text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/20"
-            >
-              Get in Touch
-            </a>
-          </div>
+            Get in Touch
+          </a>
         </div>
       </div>
     </nav>

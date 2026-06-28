@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <link
           rel="preload"
@@ -24,18 +24,11 @@ export default function RootLayout({
           href="/mahestzy_nobg.webp"
           type="image/webp"
         />
-        <link
-          rel="preload"
-          href="/fonts/plus-jakarta-sans.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
       </head>
-      <body>
+      <body className="bg-canvas text-ink antialiased">
         <LenisProvider>
           <CursorFollower />
-          <div className="relative z-10 flex min-h-screen flex-col transition-opacity duration-500">
+          <div className="bg-canvas relative z-10 flex min-h-screen flex-col transition-opacity duration-500">
             <Navbar className="items-center" />
             <main className="flex-1">{children}</main>
             <Footer />
