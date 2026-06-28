@@ -1,149 +1,213 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
 import ScrollFloat from '@/components/custom/ScrollFloat';
-import GlareHover from '@/components/custom/GlareHover';
-import { Calendar, MapPin, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
-import { experienceData, experienceCardVariants } from '@/constants/experience';
+import { ExternalLink } from 'lucide-react';
+import { experienceData } from '@/constants/experience';
 
-const INITIAL_LIMIT = 3;
+// Tech name -> Simple Icons logo. Names not listed fall back to a text pill.
+const techIcons: Record<string, string> = {
+  'Node.js': 'https://cdn.simpleicons.org/nodedotjs/5FA04E',
+  'Express.js': 'https://cdn.simpleicons.org/express/26251e',
+  Prisma: 'https://cdn.simpleicons.org/prisma/2D3748',
+  JavaScript: 'https://cdn.simpleicons.org/javascript/F7DF1E',
+  React: 'https://cdn.simpleicons.org/react/61DAFB',
+  'Tailwind CSS': 'https://cdn.simpleicons.org/tailwindcss/06B6D4',
+  Figma: 'https://cdn.simpleicons.org/figma/F24E1E',
+  Photoshop: 'https://cdn.simpleicons.org/adobephotoshop/31A8FF',
+  Illustrator: 'https://cdn.simpleicons.org/adobeillustrator/FF9A00',
+  Mocha: 'https://cdn.simpleicons.org/mocha/8D6748',
+  Chai: 'https://cdn.simpleicons.org/chai/A30701',
+  Git: 'https://cdn.simpleicons.org/git/F05032',
+};
+
+function ExperienceCard({ exp }: { exp: (typeof experienceData)[number] }) {
+  return (
+    <div className="bg-surface border-hairline hover:border-hairline-strong flex w-[300px] shrink-0 flex-col rounded-xl border p-5 transition-transform duration-300 ease-out hover:scale-[1.04] sm:w-[360px] sm:p-6">
+      {/* Header */}
+      <div className="flex flex-col gap-1">
+        <span className="text-subtle text-xs">{exp.period}</span>
+        <h3 className="text-ink text-base font-semibold sm:text-lg">{exp.company}</h3>
+        <p className="text-body text-sm font-medium">{exp.role}</p>
+      </div>
+
+      {/* Description */}
+      <p className="text-body mt-3 line-clamp-3 text-sm leading-relaxed">{exp.description}</p>
+
+      {/* Tools / languages as logos */}
+      {exp.tech?.length && (
+        <div className="mt-4 flex flex-wrap items-center gap-2.5">
+          {exp.tech.map(t =>
+            techIcons[t] ? (
+              <img
+                key={t}
+                src={techIcons[t]}
+                alt={t}
+                title={t}
+                className="h-6 w-6"
+                loading="lazy"
+              />
+            ) : (
+              <span
+                key={t}
+                title={t}
+                className="border-hairline bg-canvas-soft text-body rounded-md border px-2 py-0.5 text-xs font-medium"
+              >
+                {t}
+              </span>
+            )
+          )}
+        </div>
+      )}
+
+      {/* Project Links */}
+      {exp.links?.length && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {exp.links.map(({ text, href }) => (
+            <a
+              key={href}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand hover:text-brand-active inline-flex items-center gap-1.5 text-sm font-medium"
+            >
+              <ExternalLink className="h-3.5 w-3.5" />
+              {text}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Experience(): React.JSX.Element {
-  const [showAll, setShowAll] = useState(false);
-  const visible = showAll ? experienceData : experienceData.slice(0, INITIAL_LIMIT);
-  const hasMore = experienceData.length > INITIAL_LIMIT;
+  const trackRef = useRef<HTMLDivElement>(null);
+  const offsetRef = useRef(0);
+  const periodRef = useRef(0);
+  const pausedRef = useRef(false);
+  const draggingRef = useRef(false);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    // One copy's repeat distance, measured directly from the DOM.
+    const computePeriod = () => {
+      const a = track.children[0] as HTMLElement | undefined;
+      const b = track.children[1] as HTMLElement | undefined;
+      if (a && b) periodRef.current = b.offsetLeft - a.offsetLeft;
+    };
+
+    // Apply offset as a transform (never clamps -> no end, no snap-back).
+    const apply = () => {
+      const p = periodRef.current;
+      if (p <= 0) return;
+      let o = offsetRef.current % p;
+      if (o < 0) o += p;
+      offsetRef.current = o;
+      track.style.transform = `translate3d(${-o}px, 0, 0)`;
+    };
+
+    computePeriod();
+    window.addEventListener('resize', computePeriod);
+
+    let raf = 0;
+    const tick = () => {
+      if (periodRef.current <= 0) computePeriod();
+      if (!pausedRef.current && !draggingRef.current) {
+        offsetRef.current += 0.5;
+        apply();
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    // Wheel -> horizontal movement.
+    const onWheel = (e: WheelEvent) => {
+      const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (delta === 0) return;
+      e.preventDefault();
+      offsetRef.current += delta;
+      apply();
+    };
+    track.addEventListener('wheel', onWheel, { passive: false });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', computePeriod);
+      track.removeEventListener('wheel', onWheel);
+    };
+  }, []);
+
+  // Drag to move (mouse), tracked on the document for reliability.
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const track = trackRef.current;
+    if (!track) return;
+    draggingRef.current = true;
+    const startX = e.clientX;
+    const startOffset = offsetRef.current;
+
+    const applyNow = () => {
+      const p = periodRef.current;
+      if (p <= 0) return;
+      let o = offsetRef.current % p;
+      if (o < 0) o += p;
+      offsetRef.current = o;
+      track.style.transform = `translate3d(${-o}px, 0, 0)`;
+    };
+
+    const onMove = (ev: MouseEvent) => {
+      offsetRef.current = startOffset + (startX - ev.clientX);
+      applyNow();
+    };
+    const onUp = () => {
+      draggingRef.current = false;
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  };
 
   return (
-    <section
-      id="experience"
-      className="pointer-events-none relative z-10 mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20"
-    >
+    <section id="experience" className="relative z-10 w-full py-16 sm:py-20">
       <div className="space-y-8 sm:space-y-12">
         {/* Heading */}
-        <div className="text-center">
+        <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+          <p className="eyebrow text-subtle mb-3">Experience</p>
           <ScrollFloat
-            containerClassName="mb-4"
-            textClassName="text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] !text-5xl xl:!text-6xl"
+            containerClassName="mb-3"
+            textClassName="text-ink !text-3xl sm:!text-4xl xl:!text-5xl"
             scrollStart="top bottom"
             scrollEnd="center center"
-          >
-            Experience
-          </ScrollFloat>
-          <ScrollFloat
-            containerClassName="mb-4"
-            textClassName="text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] !text-sm sm:!text-base md:!text-lg !font-medium"
-            animationDuration={1}
-            ease="back.inOut(1)"
-            scrollStart="center bottom+=50%"
-            scrollEnd="bottom bottom-=40%"
-            stagger={0.03}
           >
             My Professional Journey
           </ScrollFloat>
         </div>
 
-        {/* Timeline */}
-        <div className="relative flex flex-col gap-6 sm:gap-8">
-          <AnimatePresence initial={false}>
-            {visible.map((exp, index) => (
-              <motion.div
-                key={exp.company + index}
-                className="pointer-events-auto relative z-10 h-full w-full"
-                style={{ opacity: 0, transform: 'translateY(60px) scale(0.95)' }}
-                custom={index}
-                initial="offscreen"
-                whileInView="onscreen"
-                viewport={{ once: false, amount: 0.2 }}
-                variants={experienceCardVariants}
-                exit={{ opacity: 0, y: 30, scale: 0.95, transition: { duration: 0.25 } }}
-              >
-                <GlareHover
-                  width="100%"
-                  height="auto"
-                  background="rgba(255, 255, 255, 0.05)"
-                  borderRadius="16px"
-                  borderColor="rgba(255, 255, 255, 0.1)"
-                  glareColor="#ffffff"
-                  glareOpacity={0.15}
-                  glareAngle={-45}
-                  glareSize={200}
-                  transitionDuration={650}
-                  className="backdrop-blur-sm transition-all duration-500 ease-in-out hover:scale-[1.02] hover:shadow-[0_8px_32px_rgba(255,255,255,0.15)]"
-                >
-                  <div className="p-6 sm:p-8">
-                    {/* Header */}
-                    <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                      <div className="min-w-0">
-                        <h3 className="text-md mb-2 text-center font-bold text-white sm:text-left sm:text-xl">
-                          {exp.company}
-                        </h3>
-                        <p className="mb-2 text-center text-sm font-medium text-gray-300 italic sm:text-left sm:text-sm">
-                          {exp.role}
-                        </p>
-                      </div>
-                      <div className="flex shrink-0 flex-row justify-center gap-3 text-xs text-gray-400 sm:flex-col sm:items-end sm:gap-1 sm:text-base">
-                        <div className="flex items-center gap-1.5">
-                          <Calendar className="h-4 w-4 shrink-0 sm:h-5 sm:w-5" />
-                          <span className="font-medium">{exp.period}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <MapPin className="h-4 w-4 shrink-0 sm:h-5 sm:w-5" />
-                          <span>{exp.location}</span>
-                        </div>
-                      </div>
-                    </div>
+        {/* Strip — drag with mouse or scroll wheel, loops infinitely (transform) */}
+        <div className="relative overflow-hidden">
+          {/* Edge fades */}
+          <div className="from-canvas pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r to-transparent sm:w-24" />
+          <div className="from-canvas pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l to-transparent sm:w-24" />
 
-                    {/* Description */}
-                    <p className="border-t border-white/10 pt-3 text-sm leading-relaxed text-gray-300 sm:text-base">
-                      {exp.description}
-                    </p>
-
-                    {/* Project Links */}
-                    {exp.links?.length && (
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {exp.links.map(({ text, href }) => (
-                          <a
-                            key={href}
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white/80 transition-all duration-300 hover:border-white/40 hover:bg-white/20 hover:text-white"
-                          >
-                            <ExternalLink className="h-3 w-3" />
-                            {text}
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </GlareHover>
-              </motion.div>
+          <div
+            ref={trackRef}
+            onMouseDown={onMouseDown}
+            onMouseEnter={() => (pausedRef.current = true)}
+            onMouseLeave={() => (pausedRef.current = false)}
+            className="flex w-max cursor-grab gap-4 py-4 will-change-transform select-none active:cursor-grabbing sm:gap-6"
+          >
+            {[0, 1, 2].map(copy => (
+              <div key={copy} className="flex shrink-0 gap-4 sm:gap-6" aria-hidden={copy !== 0}>
+                {experienceData.map((exp, index) => (
+                  <ExperienceCard key={exp.company + index} exp={exp} />
+                ))}
+              </div>
             ))}
-          </AnimatePresence>
-        </div>
-
-        {/* See More / See Less */}
-        {hasMore && (
-          <div className="pointer-events-auto flex justify-center">
-            <button
-              onClick={() => setShowAll(v => !v)}
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-2.5 text-sm font-medium text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/40 hover:bg-white/10 hover:text-white"
-            >
-              {showAll ? (
-                <>
-                  <ChevronUp className="h-4 w-4" />
-                  See Less
-                </>
-              ) : (
-                <>
-                  <ChevronDown className="h-4 w-4" />
-                  See More
-                </>
-              )}
-            </button>
           </div>
-        )}
+        </div>
       </div>
     </section>
   );

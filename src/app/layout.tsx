@@ -6,36 +6,23 @@ import CursorFollower from '@/components/custom/CursorFollower';
 import LenisProvider from '@/components/custom/LenisProvider';
 
 export const metadata: Metadata = {
-  title: 'MahesTzy Portofolio',
+  title: 'Mahesa Bagus Raditya',
   description: 'Mahesa Bagus Raditya Personal Portofolio Website',
+  icons: {
+    icon: [{ url: '/logo.svg', sizes: '200x200', type: 'image/png' }],
+  },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
-        <link
-          rel="preload"
-          as="image"
-          href="/mahestzy_nobg.webp"
-          type="image/webp"
-        />
-        <link
-          rel="preload"
-          href="/fonts/plus-jakarta-sans.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
+        <link rel="preload" as="image" href="/mahestzy_nobg.webp" type="image/webp" />
       </head>
-      <body>
+      <body className="bg-canvas text-ink antialiased">
         <LenisProvider>
           <CursorFollower />
-          <div className="relative z-10 flex min-h-screen flex-col transition-opacity duration-500">
+          <div className="bg-canvas relative z-10 flex min-h-screen flex-col transition-opacity duration-500">
             <Navbar className="items-center" />
             <main className="flex-1">{children}</main>
             <Footer />

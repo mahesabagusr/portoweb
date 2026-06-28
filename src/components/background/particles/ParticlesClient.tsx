@@ -14,13 +14,13 @@ interface ParticlesClientProps {
 }
 
 export default function ParticlesClient({
-  particleColors = ['#1d175c', '#1d285c', '#1d5c8c'],
-  particleCount = 500,
+  particleColors = ['#cfcdc4', '#dfa88f'],
+  particleCount = 320,
   particleSpread = 15,
-  speed = 0.09,
-  particleBaseSize = 150,
+  speed = 0.06,
+  particleBaseSize = 120,
   moveParticlesOnHover = true,
-  alphaParticles = false,
+  alphaParticles = true,
   disableRotation = false,
 }: ParticlesClientProps) {
   return (
