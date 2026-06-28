@@ -23,13 +23,10 @@ export default function Jumbotron(): React.JSX.Element {
         />
       </div>
 
-      {/* Eyebrow label */}
-      <span className="eyebrow text-subtle">Informatics Student · Developer</span>
-
-      <div className="relative z-20 -mt-2 flex w-full items-center justify-center">
+      <div className="relative z-20 -mt-6 flex w-full items-center justify-center sm:-mt-8 md:-mt-12 lg:-mt-20">
         <BlurText
           text="Mahesa Bagus Raditya"
-          className="display-mega text-ink justify-center px-2 text-center text-[34px] sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[72px]"
+          className="text-ink justify-center px-2 text-center text-[32px] font-black tracking-tight sm:text-5xl md:text-6xl lg:text-[60px] xl:text-[68px]"
           delay={150}
           animateBy="words"
           direction="top"

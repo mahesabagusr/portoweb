@@ -70,22 +70,11 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
   return (
     <nav
       ref={menuRef}
-      className={`bg-canvas/85 border-hairline sticky top-0 z-50 w-full border-b backdrop-blur-md ${className}`}
+      className={`sticky top-6 z-50 mx-auto my-6 w-fit ${className}`}
     >
-      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Wordmark — brand orange dot + ink text */}
-        <a
-          href="#home"
-          onClick={e => scrollToSection(e, '#home')}
-          className="flex items-center gap-2"
-          aria-label="MahesTzy home"
-        >
-          <span className="bg-brand inline-block h-2.5 w-2.5 rounded-full" />
-          <span className="text-ink text-[15px] font-semibold tracking-tight">MahesTzy</span>
-        </a>
-
-        {/* Desktop menu */}
-        <div className="hidden items-center gap-1 sm:flex">
+      {/* Desktop floating pill */}
+      <div className="bg-canvas/85 border-hairline hidden rounded-full border px-2 py-1.5 backdrop-blur-md sm:block">
+        <div className="flex items-center gap-1">
           {NavbarMenu.map(item => {
             const isActive = activeSection === item.sectionId;
             return (
@@ -93,73 +82,76 @@ export default function Navbar({ className = '' }: NavbarProps): React.JSX.Eleme
                 key={item.name}
                 href={item.href}
                 onClick={e => scrollToSection(e, item.href)}
-                className={`rounded-md px-3 py-2 text-sm transition-colors duration-200 ${
-                  isActive
-                    ? 'text-ink font-medium'
-                    : 'text-body hover:text-ink font-medium'
+                className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors duration-200 ${
+                  isActive ? 'text-ink bg-hairline-soft' : 'text-body hover:text-ink'
                 }`}
               >
                 {item.name}
               </a>
             );
           })}
-        </div>
 
-        {/* Right CTA — scarce Cursor Orange */}
-        <div className="hidden items-center gap-3 sm:flex">
+          {/* CTA — scarce Cursor Orange */}
           <a
             href="#contact"
             onClick={e => scrollToSection(e, '#contact')}
-            className="bg-brand hover:bg-brand-active text-on-brand rounded-md px-[18px] py-2.5 text-sm font-medium transition-colors duration-200"
+            className="bg-brand hover:bg-brand-active text-on-brand ml-1 rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-200"
           >
             Get in Touch
           </a>
         </div>
-
-        {/* Mobile hamburger */}
-        <button
-          onClick={() => setIsOpen(v => !v)}
-          className="text-ink relative flex h-10 w-10 items-center justify-center sm:hidden"
-          aria-label="Toggle menu"
-        >
-          <Menu
-            className={`absolute h-5 w-5 transition-all duration-300 ${isOpen ? 'scale-75 rotate-90 opacity-0' : 'scale-100 rotate-0 opacity-100'}`}
-          />
-          <X
-            className={`absolute h-5 w-5 transition-all duration-300 ${isOpen ? 'scale-100 rotate-0 opacity-100' : 'scale-75 -rotate-90 opacity-0'}`}
-          />
-        </button>
       </div>
 
-      {/* Mobile dropdown */}
-      <div
-        className={`bg-canvas border-hairline overflow-hidden border-t transition-all duration-300 ease-out sm:hidden ${
-          isOpen ? 'max-h-96 opacity-100' : 'pointer-events-none max-h-0 opacity-0'
-        }`}
-      >
-        <div className="flex flex-col px-4 py-2">
-          {NavbarMenu.map(item => {
-            const isActive = activeSection === item.sectionId;
-            return (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={e => scrollToSection(e, item.href)}
-                className={`rounded-md px-3 py-3 text-sm transition-colors duration-200 ${
-                  isActive ? 'text-ink font-medium' : 'text-body hover:text-ink font-medium'
-                }`}
-              >
-                {item.name}
-              </a>
-            );
-          })}
-          <a
-            href="#contact"
-            onClick={e => scrollToSection(e, '#contact')}
-            className="bg-brand hover:bg-brand-active text-on-brand mt-2 mb-2 rounded-md px-4 py-2.5 text-center text-sm font-medium transition-colors duration-200"
+      {/* Mobile pill + dropdown */}
+      <div className="relative sm:hidden">
+        <div className="bg-canvas/85 border-hairline flex items-center rounded-full border p-1.5 backdrop-blur-md">
+          <button
+            onClick={() => setIsOpen(v => !v)}
+            className="text-ink hover:bg-hairline-soft relative flex h-9 w-9 items-center justify-center rounded-full transition-colors duration-200"
+            aria-label="Toggle menu"
           >
-            Get in Touch
-          </a>
+            <Menu
+              className={`absolute h-5 w-5 transition-all duration-300 ${isOpen ? 'scale-75 rotate-90 opacity-0' : 'scale-100 rotate-0 opacity-100'}`}
+            />
+            <X
+              className={`absolute h-5 w-5 transition-all duration-300 ${isOpen ? 'scale-100 rotate-0 opacity-100' : 'scale-75 -rotate-90 opacity-0'}`}
+            />
+          </button>
+        </div>
+
+        {/* Animated dropdown */}
+        <div
+          className={`bg-canvas/95 border-hairline absolute left-1/2 mt-2 w-48 -translate-x-1/2 overflow-hidden rounded-2xl border backdrop-blur-md transition-all duration-300 ease-out ${
+            isOpen
+              ? 'pointer-events-auto translate-y-0 opacity-100'
+              : 'pointer-events-none -translate-y-2 opacity-0'
+          }`}
+        >
+          <div className="flex flex-col py-2">
+            {NavbarMenu.map(item => {
+              const isActive = activeSection === item.sectionId;
+              return (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  onClick={e => scrollToSection(e, item.href)}
+                  className={`px-5 py-3 text-sm transition-colors duration-200 ${
+                    isActive ? 'text-ink bg-hairline-soft font-medium' : 'text-body hover:text-ink font-medium'
+                  }`}
+                >
+                  {item.name}
+                </a>
+              );
+            })}
+            <div className="bg-hairline mx-4 my-2 h-px" />
+            <a
+              href="#contact"
+              onClick={e => scrollToSection(e, '#contact')}
+              className="bg-brand hover:bg-brand-active text-on-brand mx-3 mb-1 rounded-full px-4 py-2 text-center text-sm font-medium transition-colors duration-200"
+            >
+              Get in Touch
+            </a>
+          </div>
         </div>
       </div>
     </nav>
