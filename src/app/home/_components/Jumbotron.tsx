@@ -8,9 +8,9 @@ export default function Jumbotron(): React.JSX.Element {
   return (
     <div
       id="home"
-      className="pointer-events-none relative z-10 mx-auto flex max-w-5xl flex-col items-center justify-center gap-2 py-12 text-center sm:gap-3 sm:py-16 lg:gap-4 lg:py-20"
+      className="pointer-events-none relative z-10 mx-auto flex max-w-5xl flex-col items-center justify-center gap-2 pt-2 pb-12 text-center sm:gap-3 sm:pt-4 sm:pb-16 lg:gap-4 lg:pt-6 lg:pb-20"
     >
-      <div className="animate-float pointer-events-auto group relative z-10 w-44 sm:w-52 md:w-64 lg:w-72">
+      <div className="animate-float group pointer-events-auto relative z-10 w-44 sm:w-52 md:w-64 lg:w-72">
         <img
           src="/mahestzy_nobg.webp"
           alt="Mahesa Bagus Raditya"
@@ -22,10 +22,10 @@ export default function Jumbotron(): React.JSX.Element {
         />
       </div>
 
-      <div className="relative z-20 flex w-full items-center justify-center">
+      <div className="relative z-20 -mt-4 flex w-full items-center justify-center sm:-mt-6 md:-mt-8 lg:-mt-14">
         <BlurText
           text="Mahesa Bagus Raditya"
-          className="display-mega text-ink justify-center px-2 text-center text-[34px] sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[72px]"
+          className="display-mega text-ink justify-center px-2 text-center text-[34px] font-medium sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[80px]"
           delay={150}
           animateBy="words"
           direction="top"
@@ -36,7 +36,6 @@ export default function Jumbotron(): React.JSX.Element {
         <p className="animate-fade-in text-body text-base leading-relaxed font-normal opacity-0 [animation-delay:0.5s] [animation-fill-mode:forwards] sm:text-lg">
           Undergraduate Informatics Student{' '}
           <span className="text-ink font-medium">@ Telkom University Bandung</span>
-      
         </p>
 
         <div className="animate-fade-in pointer-events-auto flex flex-wrap items-center justify-center gap-x-5 gap-y-3 opacity-0 [animation-delay:0.7s] [animation-fill-mode:forwards]">

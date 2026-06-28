@@ -14,7 +14,7 @@ interface ParticlesClientProps {
 }
 
 export default function ParticlesClient({
-  particleColors = ['#cfcdc4', '#dfa88f', '#9fbbe0'],
+  particleColors = ['#cfcdc4', '#dfa88f'],
   particleCount = 320,
   particleSpread = 15,
   speed = 0.06,

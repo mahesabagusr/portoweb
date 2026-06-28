@@ -1,26 +1,98 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
 import ScrollFloat from '@/components/custom/ScrollFloat';
-import { Calendar, MapPin, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
-import { experienceData, experienceCardVariants } from '@/constants/experience';
+import { ExternalLink } from 'lucide-react';
+import { experienceData } from '@/constants/experience';
 
-const INITIAL_LIMIT = 3;
+// Tech name -> Simple Icons logo. Names not listed fall back to a text pill.
+const techIcons: Record<string, string> = {
+  'Node.js': 'https://cdn.simpleicons.org/nodedotjs/5FA04E',
+  'Express.js': 'https://cdn.simpleicons.org/express/26251e',
+  Prisma: 'https://cdn.simpleicons.org/prisma/2D3748',
+  JavaScript: 'https://cdn.simpleicons.org/javascript/F7DF1E',
+  React: 'https://cdn.simpleicons.org/react/61DAFB',
+  'Tailwind CSS': 'https://cdn.simpleicons.org/tailwindcss/06B6D4',
+  Figma: 'https://cdn.simpleicons.org/figma/F24E1E',
+  Photoshop: 'https://cdn.simpleicons.org/adobephotoshop/31A8FF',
+  Illustrator: 'https://cdn.simpleicons.org/adobeillustrator/FF9A00',
+  Mocha: 'https://cdn.simpleicons.org/mocha/8D6748',
+  Chai: 'https://cdn.simpleicons.org/chai/A30701',
+  Git: 'https://cdn.simpleicons.org/git/F05032',
+};
+
+function ExperienceCard({ exp }: { exp: (typeof experienceData)[number] }) {
+  return (
+    <div className="bg-surface border-hairline hover:border-hairline-strong flex w-[300px] shrink-0 flex-col rounded-xl border p-5 transition-transform duration-300 ease-out hover:scale-[1.04] sm:w-[360px] sm:p-6">
+      {/* Header */}
+      <div className="flex flex-col gap-1">
+        <span className="text-subtle text-xs">{exp.period}</span>
+        <h3 className="text-ink text-base font-semibold sm:text-lg">{exp.company}</h3>
+        <p className="text-body text-sm font-medium">{exp.role}</p>
+      </div>
+
+      {/* Description */}
+      <p className="text-body mt-3 line-clamp-3 text-sm leading-relaxed">{exp.description}</p>
+
+      {/* Tools / languages as logos */}
+      {exp.tech?.length && (
+        <div className="mt-4 flex flex-wrap items-center gap-2.5">
+          {exp.tech.map(t =>
+            techIcons[t] ? (
+              <img
+                key={t}
+                src={techIcons[t]}
+                alt={t}
+                title={t}
+                className="h-6 w-6"
+                loading="lazy"
+              />
+            ) : (
+              <span
+                key={t}
+                title={t}
+                className="border-hairline bg-canvas-soft text-body rounded-md border px-2 py-0.5 text-xs font-medium"
+              >
+                {t}
+              </span>
+            )
+          )}
+        </div>
+      )}
+
+      {/* Project Links */}
+      {exp.links?.length && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {exp.links.map(({ text, href }) => (
+            <a
+              key={href}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand hover:text-brand-active inline-flex items-center gap-1.5 text-sm font-medium"
+            >
+              <ExternalLink className="h-3.5 w-3.5" />
+              {text}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Experience(): React.JSX.Element {
-  const [showAll, setShowAll] = useState(false);
-  const visible = showAll ? experienceData : experienceData.slice(0, INITIAL_LIMIT);
-  const hasMore = experienceData.length > INITIAL_LIMIT;
+  // Duplicate the list so the marquee can loop seamlessly.
+  const loop = [...experienceData, ...experienceData];
 
   return (
     <section
       id="experience"
-      className="pointer-events-none relative z-10 mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8"
+      className="pointer-events-none relative z-10 w-full py-16 sm:py-20"
     >
       <div className="space-y-8 sm:space-y-12">
         {/* Heading */}
-        <div className="text-center">
+        <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
           <p className="eyebrow text-subtle mb-3">Experience</p>
           <ScrollFloat
             containerClassName="mb-3"
@@ -32,91 +104,18 @@ export default function Experience(): React.JSX.Element {
           </ScrollFloat>
         </div>
 
-        {/* Cards */}
-        <div className="relative flex flex-col gap-4 sm:gap-6">
-          <AnimatePresence initial={false}>
-            {visible.map((exp, index) => (
-              <motion.div
-                key={exp.company + index}
-                className="pointer-events-auto relative z-10 h-full w-full"
-                style={{ opacity: 0, transform: 'translateY(60px) scale(0.95)' }}
-                custom={index}
-                initial="offscreen"
-                whileInView="onscreen"
-                viewport={{ once: false, amount: 0.2 }}
-                variants={experienceCardVariants}
-                exit={{ opacity: 0, y: 30, scale: 0.95, transition: { duration: 0.25 } }}
-              >
-                <div className="bg-surface border-hairline hover:border-hairline-strong rounded-xl border p-6 transition-colors duration-300 sm:p-8">
-                  {/* Header */}
-                  <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                    <div className="min-w-0 text-center sm:text-left">
-                      <h3 className="text-ink mb-1 text-lg font-semibold sm:text-xl">
-                        {exp.company}
-                      </h3>
-                      <p className="text-body text-sm font-medium">{exp.role}</p>
-                    </div>
-                    <div className="text-subtle flex shrink-0 flex-row justify-center gap-3 text-xs sm:flex-col sm:items-end sm:gap-1 sm:text-sm">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="h-4 w-4 shrink-0" />
-                        <span className="font-medium">{exp.period}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <MapPin className="h-4 w-4 shrink-0" />
-                        <span>{exp.location}</span>
-                      </div>
-                    </div>
-                  </div>
+        {/* Marquee — cards running to the left */}
+        <div className="group pointer-events-auto relative overflow-hidden">
+          {/* Edge fades */}
+          <div className="from-canvas pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r to-transparent sm:w-24" />
+          <div className="from-canvas pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l to-transparent sm:w-24" />
 
-                  {/* Description */}
-                  <p className="border-hairline text-body border-t pt-3 text-sm leading-relaxed sm:text-base">
-                    {exp.description}
-                  </p>
-
-                  {/* Project Links */}
-                  {exp.links?.length && (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {exp.links.map(({ text, href }) => (
-                        <a
-                          key={href}
-                          href={href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="border-hairline-strong text-body hover:border-ink hover:text-ink inline-flex items-center gap-1.5 rounded-md border bg-canvas-soft px-3 py-1 text-xs font-medium transition-colors duration-200"
-                        >
-                          <ExternalLink className="h-3 w-3" />
-                          {text}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </motion.div>
+          <div className="animate-marquee flex w-max gap-4 py-4 group-hover:[animation-play-state:paused] sm:gap-6">
+            {loop.map((exp, index) => (
+              <ExperienceCard key={exp.company + index} exp={exp} />
             ))}
-          </AnimatePresence>
-        </div>
-
-        {/* See More / See Less */}
-        {hasMore && (
-          <div className="pointer-events-auto flex justify-center">
-            <button
-              onClick={() => setShowAll(v => !v)}
-              className="border-hairline-strong text-body hover:border-ink hover:text-ink inline-flex items-center gap-2 rounded-md border bg-surface px-5 py-2.5 text-sm font-medium transition-colors duration-200"
-            >
-              {showAll ? (
-                <>
-                  <ChevronUp className="h-4 w-4" />
-                  See Less
-                </>
-              ) : (
-                <>
-                  <ChevronDown className="h-4 w-4" />
-                  See More
-                </>
-              )}
-            </button>
           </div>
-        )}
+        </div>
       </div>
     </section>
   );
