@@ -8,9 +8,9 @@ export default function Jumbotron(): React.JSX.Element {
   return (
     <div
       id="home"
-      className="pointer-events-none relative z-10 mx-auto flex max-w-5xl flex-col items-center justify-center gap-4 py-12 text-center sm:gap-6 sm:py-16 lg:gap-8 lg:py-20"
+      className="pointer-events-none relative z-10 mx-auto flex max-w-5xl flex-col items-center justify-center gap-2 py-12 text-center sm:gap-3 sm:py-16 lg:gap-4 lg:py-20"
     >
-      <div className="pointer-events-auto relative z-10 w-44 sm:w-52 md:w-64 lg:w-72">
+      <div className="animate-float pointer-events-auto group relative z-10 w-44 sm:w-52 md:w-64 lg:w-72">
         <img
           src="/mahestzy_nobg.webp"
           alt="Mahesa Bagus Raditya"
@@ -18,15 +18,14 @@ export default function Jumbotron(): React.JSX.Element {
           height={1929}
           fetchPriority="high"
           decoding="async"
-          className="h-auto w-full scale-105 object-contain grayscale transition-all duration-500 hover:grayscale-0"
-          style={{ objectPosition: '50% 20%' }}
+          className="mask-fade-bottom h-auto w-full object-contain grayscale transition-all duration-500 ease-out group-hover:scale-[1.04] group-hover:grayscale-0"
         />
       </div>
 
-      <div className="relative z-20 -mt-6 flex w-full items-center justify-center sm:-mt-8 md:-mt-12 lg:-mt-20">
+      <div className="relative z-20 flex w-full items-center justify-center">
         <BlurText
           text="Mahesa Bagus Raditya"
-          className="text-ink justify-center px-2 text-center text-[32px] font-black tracking-tight sm:text-5xl md:text-6xl lg:text-[60px] xl:text-[68px]"
+          className="display-mega text-ink justify-center px-2 text-center text-[34px] sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[72px]"
           delay={150}
           animateBy="words"
           direction="top"
@@ -37,9 +36,7 @@ export default function Jumbotron(): React.JSX.Element {
         <p className="animate-fade-in text-body text-base leading-relaxed font-normal opacity-0 [animation-delay:0.5s] [animation-fill-mode:forwards] sm:text-lg">
           Undergraduate Informatics Student{' '}
           <span className="text-ink font-medium">@ Telkom University Bandung</span>
-          <br className="hidden sm:block" />
-          <span className="sm:hidden"> • </span>
-          Core Team <span className="text-ink font-medium">@ GDGoC Telkom University Bandung</span>
+      
         </p>
 
         <div className="animate-fade-in pointer-events-auto flex flex-wrap items-center justify-center gap-x-5 gap-y-3 opacity-0 [animation-delay:0.7s] [animation-fill-mode:forwards]">

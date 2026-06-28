@@ -24,7 +24,7 @@ export default function Experience(): React.JSX.Element {
           <p className="eyebrow text-subtle mb-3">Experience</p>
           <ScrollFloat
             containerClassName="mb-3"
-            textClassName="text-ink sm:!text-5xl xl:!text-6xl"
+            textClassName="text-ink !text-3xl sm:!text-4xl xl:!text-5xl"
             scrollStart="top bottom"
             scrollEnd="center center"
           >

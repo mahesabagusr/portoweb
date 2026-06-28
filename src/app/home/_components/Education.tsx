@@ -18,7 +18,7 @@ export default function Education(): React.JSX.Element {
           <p className="eyebrow text-subtle mb-3">Education</p>
           <ScrollFloat
             containerClassName="mb-3"
-            textClassName="text-ink sm:!text-5xl xl:!text-6xl"
+            textClassName="text-ink !text-3xl sm:!text-4xl xl:!text-5xl"
             scrollStart="top bottom"
             scrollEnd="center center"
           >
@@ -55,9 +55,7 @@ export default function Education(): React.JSX.Element {
                     <h3 className="text-ink mb-1 text-lg font-semibold sm:text-xl">
                       {edu.institution}
                     </h3>
-                    <p className="text-body mb-3 text-sm font-medium sm:text-base">
-                      {edu.degree}
-                    </p>
+                    <p className="text-body mb-3 text-sm font-medium sm:text-base">{edu.degree}</p>
                     <div className="text-subtle flex items-center gap-2 text-sm">
                       <Calendar className="h-4 w-4 shrink-0" />
                       <span className="font-medium">{edu.period}</span>

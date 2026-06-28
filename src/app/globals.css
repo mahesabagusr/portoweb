@@ -203,4 +203,25 @@ html {
   .animate-fade-in {
     animation: fade-in 0.8s ease-out;
   }
+
+  /* Gentle floating motion for the hero portrait */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Fade the bottom edge of the hero portrait into the canvas */
+  .mask-fade-bottom {
+    -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+  }
 }
