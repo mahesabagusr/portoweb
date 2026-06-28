@@ -30,14 +30,14 @@ export const educationData: EducationItem[] = [
     degree: 'Bachelor of Informatics',
     period: '2024 - Now',
     logo: TelkomUni,
-    gallery: [Kuliah1, Kuliah2, Kuliah3, Kuliah4,Kuliah5 ,Kuliah6 ],
+    gallery: [Kuliah1, Kuliah2, Kuliah6, Kuliah4, Kuliah5, Kuliah3],
   },
   {
     institution: 'SMK Telkom Purwokerto',
     degree: 'Software Engineering',
     period: '2021 - 2024',
     logo: TelkomSch,
-    gallery: [Smk1, Smk2, Smk3, Smk4, Smk6, smk5],
+    gallery: [Smk6, Smk2, Smk3, Smk4, Smk1],
   },
 ];
 

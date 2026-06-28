@@ -30,7 +30,7 @@ function EducationCard({ edu, index }: { edu: EducationItem; index: number }) {
         <AnimatePresence>
           {open && (
             <motion.div
-              className="pointer-events-none absolute -top-2 left-1/2 z-30 flex w-80 max-w-md -translate-x-1/2 -translate-y-full items-end gap-3 sm:gap-12"
+              className="pointer-events-none absolute -top-2 left-1/2 z-30 flex w-80 -translate-x-1/2 -translate-y-full items-end gap-3 sm:gap-12 xl:w-140"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -49,9 +49,9 @@ function EducationCard({ edu, index }: { edu: EducationItem; index: number }) {
                   <Image
                     src={src}
                     alt={`${edu.institution} moment ${i + 1}`}
-                    width={880}
-                    height={256}
-                    quality={90}
+                    width={100}
+                    height={150}
+                    quality={100}
                     className="h-24 w-40 rounded-md object-cover sm:h-32 sm:w-110"
                   />
                 </motion.div>
