@@ -22,7 +22,7 @@ export default function Jumbotron(): React.JSX.Element {
         />
       </div>
 
-      <div className="relative z-20 -mt-4 flex w-full items-center justify-center sm:-mt-6 md:-mt-8 lg:-mt-14">
+      <div className="relative z-20 -mt-4 flex w-full items-center justify-center sm:-mt-6 md:-mt-8 lg:-mt-16">
         <BlurText
           text="Mahesa Bagus Raditya"
           className="display-mega text-ink justify-center px-2 text-center text-[34px] font-medium sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[80px]"
