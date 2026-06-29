@@ -36,31 +36,79 @@ export default function SplashScreen({ onComplete }: { onComplete?: () => void }
 
   const totalMs = reduceMotion ? 900 : TOTAL_SECONDS * 1000;
 
+  // Timer: end the splash after the timeline completes.
   useEffect(() => {
     // To show only once per session, uncomment:
     // if (sessionStorage.getItem('splashShown')) { setDone(true); onComplete?.(); return; }
-
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
 
     const timer = setTimeout(() => {
       setDone(true);
       onComplete?.(); // signal the site to start its entrance animations
       // sessionStorage.setItem('splashShown', '1');
     }, totalMs);
-
-    return () => {
-      clearTimeout(timer);
-      document.body.style.overflow = prevOverflow;
-    };
+    return () => clearTimeout(timer);
   }, [totalMs, onComplete]);
 
+  // Scroll lock: active while the splash is showing; released as soon as `done`
+  // flips true (the effect cleanup runs because the dependency changed).
+  useEffect(() => {
+    if (done) return;
+
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    const prevBodyOverflow = document.body.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+
+    // The site uses Lenis smooth-scroll, which intercepts wheel/touch via its
+    // own listeners — so plain overflow:hidden is not enough. Stop Lenis too.
+    // Lenis mounts slightly after this splash, so retry until it's available.
+    let lenisTries = 0;
+    const stopLenis = () => {
+      if (window.lenis) {
+        window.lenis.stop();
+        return true;
+      }
+      return false;
+    };
+    let lenisInterval: ReturnType<typeof setInterval> | undefined;
+    if (!stopLenis()) {
+      lenisInterval = setInterval(() => {
+        if (stopLenis() || ++lenisTries > 40) {
+          if (lenisInterval) clearInterval(lenisInterval);
+        }
+      }, 50);
+    }
+
+    // Hard guarantee: swallow scroll input before Lenis (or the browser) acts.
+    const blockScroll = (e: Event) => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    };
+    const scrollKeys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '];
+    const blockKeys = (e: KeyboardEvent) => {
+      if (scrollKeys.includes(e.key)) e.preventDefault();
+    };
+    window.addEventListener('wheel', blockScroll, { passive: false });
+    window.addEventListener('touchmove', blockScroll, { passive: false });
+    window.addEventListener('keydown', blockKeys, { passive: false });
+
+    return () => {
+      if (lenisInterval) clearInterval(lenisInterval);
+      document.documentElement.style.overflow = prevHtmlOverflow;
+      document.body.style.overflow = prevBodyOverflow;
+      window.lenis?.start();
+      window.removeEventListener('wheel', blockScroll);
+      window.removeEventListener('touchmove', blockScroll);
+      window.removeEventListener('keydown', blockKeys);
+    };
+  }, [done]);
+
   return (
-    <AnimatePresence onExitComplete={() => (document.body.style.overflow = '')}>
+    <AnimatePresence>
       {!done && (
         <motion.div
           key="splash"
-          className="bg-canvas fixed inset-0 z-[200] flex items-center justify-center"
+          className="bg-canvas fixed inset-0 z-10000 flex items-center justify-center"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.04 }}
           transition={{ duration: 0.6, ease: 'easeInOut' }}
@@ -79,7 +127,7 @@ export default function SplashScreen({ onComplete }: { onComplete?: () => void }
                   key={i}
                   d={d}
                   stroke="currentColor"
-                  strokeWidth={5}
+                  strokeWidth={3}
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   fill="currentColor"
@@ -118,7 +166,7 @@ export default function SplashScreen({ onComplete }: { onComplete?: () => void }
                   : { delay: WELCOME_DELAY, duration: WELCOME_DURATION, ease: 'easeOut' }
               }
             >
-              Hello👋
+              Hello Folks👋
             </motion.p>
           </div>
         </motion.div>
