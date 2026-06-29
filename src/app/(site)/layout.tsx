@@ -1,8 +1,8 @@
-import Navbar from '@/components/custom/NavbarPublic';
-import Footer from '@/components/custom/FooterPublic';
-import CursorFollower from '@/components/custom/CursorFollower';
-import LenisProvider from '@/components/custom/LenisProvider';
-import UnderDevelopment from '@/components/custom/UnderDevelopment';
+import Navbar from '@/components/layout/NavbarPublic';
+import Footer from '@/components/layout/FooterPublic';
+import CursorFollower from '@/components/common/CursorFollower';
+import LenisProvider from '@/components/providers/LenisProvider';
+import UnderDevelopment from '@/components/common/UnderDevelopment';
 
 const underDevelopment = process.env.NEXT_PUBLIC_UNDER_DEVELOPMENT === 'true';
 

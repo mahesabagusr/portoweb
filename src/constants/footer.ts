@@ -8,10 +8,19 @@ export interface SocialLink {
   display: string;
 }
 
-export interface TechItem {
+export interface FooterNavLink {
   name: string;
-  icon: string;
+  href: string;
 }
+
+/** Quick links mirroring the navbar sections. */
+export const footerNav: FooterNavLink[] = [
+  { name: 'Home', href: '#home' },
+  { name: 'Education', href: '#education' },
+  { name: 'Experience', href: '#experience' },
+  { name: 'Projects', href: '#projects' },
+  { name: 'Get in Touch', href: '#contact' },
+];
 
 export const socialLinks: SocialLink[] = [
   {

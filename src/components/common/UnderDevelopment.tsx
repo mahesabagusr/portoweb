@@ -1,5 +1,5 @@
 import { Github, Linkedin, Instagram, Mail } from 'lucide-react';
-import MusicPlayer from '@/components/custom/MusicPlayer';
+import MusicPlayer from '@/components/common/MusicPlayer';
 import Image from 'next/image';
 
 export default function UnderDevelopment(): React.JSX.Element {

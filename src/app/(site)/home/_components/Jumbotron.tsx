@@ -1,7 +1,7 @@
 'use client';
 
-import { GlassButton } from '@/components/custom/glass-button';
-import BlurText from '@/components/custom/BlurText';
+import { GlassButton } from '@/components/ui/glass-button';
+import BlurText from '@/components/animations/BlurText';
 import { Github, Linkedin, Instagram, Mail } from 'lucide-react';
 
 export default function Jumbotron(): React.JSX.Element {

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import TRPCReactProvider from '@/lib/trpc/Provider';
 
 export const metadata: Metadata = {
   title: 'Mahesa Bagus Raditya',
@@ -15,7 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preload" as="image" href="/mahestzy_nobg.webp" type="image/webp" />
       </head>
-      <body className="bg-canvas text-ink antialiased">{children}</body>
+      <body className="bg-canvas text-ink antialiased">
+        <TRPCReactProvider>{children}</TRPCReactProvider>
+      </body>
     </html>
   );
 }

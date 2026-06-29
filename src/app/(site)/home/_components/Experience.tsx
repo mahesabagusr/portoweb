@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import ScrollFloat from '@/components/custom/ScrollFloat';
+import ScrollFloat from '@/components/animations/ScrollFloat';
 import { ExternalLink } from 'lucide-react';
 import { experienceData } from '@/constants/experience';
 

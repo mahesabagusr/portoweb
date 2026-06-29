@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import ScrollFloat from '@/components/custom/ScrollFloat';
+import ScrollFloat from '@/components/animations/ScrollFloat';
 import { Calendar } from 'lucide-react';
 import { educationData, cardVariants, type EducationItem } from '@/constants/education';
 
