@@ -19,6 +19,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <link rel="preload" as="image" href="/mahestzy_nobg.webp" type="image/webp" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9647783114393793"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className="bg-canvas text-ink antialiased">
         <TRPCReactProvider>
