@@ -535,3 +535,175 @@ The system uses **hairline-only depth**. No drop shadows, no elevation tiers. Ca
 - Animation timings (timeline pill entrance, IDE pane reveal) out of scope.
 - In-app surfaces (code editor, chat panel, agent timeline) only partially captured via marketing IDE mockups.
 - Form validation states beyond focus not visible on captured surfaces.
+
+## Project
+
+### Purpose
+
+Personal portfolio site for **Mahesa Bagus Raditya**. The site presents education, professional experience, and projects through a scroll-driven editorial layout on a warm-cream canvas — inspired by the Cursor brand language documented above.
+
+### Audience
+
+Recruiters, hiring managers, and collaborators viewing the site on desktop, tablet, and mobile.
+
+### Architecture
+
+Next.js 16 App Router with a `(site)` route group for public pages. Data flows through a tRPC layer (client → server router) backed by TanStack React Query. The site deploys to Vercel via `next build`.
+
+```
+portofolio-gacor/
+├─ src/
+│  ├─ app/
+│  │  ├─ (site)/              # Route group — public pages
+│  │  │  ├─ home/
+│  │  │  │  ├─ _components/   # Page-scoped sections
+│  │  │  │  │  ├─ Jumbotron.tsx
+│  │  │  │  │  ├─ Experience.tsx
+│  │  │  │  │  └─ Education.tsx
+│  │  │  │  └─ page.tsx
+│  │  │  └─ layout.tsx        # (site) layout (navbar + footer)
+│  │  ├─ api/                 # tRPC HTTP handler
+│  │  ├─ globals.css          # Design tokens + base + component styles
+│  │  ├─ layout.tsx           # Root layout (providers, fonts, meta)
+│  │  ├─ not-found.tsx
+│  │  └─ page.tsx             # Root redirect
+│  ├─ components/
+│  │  ├─ animations/          # BlurText, FuzzyText, GlareHover, ScrollFloat, SplitText…
+│  │  ├─ background/          # OGL particle canvas
+│  │  ├─ common/              # CursorFollower, SplashScreen, MusicPlayer, VisitorCounter…
+│  │  ├─ layout/              # NavbarPublic, FooterPublic
+│  │  ├─ providers/           # Client-side provider wrappers
+│  │  └─ ui/                  # shadcn primitives (Button, GlassButton, Progress)
+│  ├─ constants/              # Static data (education, experience, footer links)
+│  ├─ lib/
+│  │  ├─ trpc/                # tRPC client + React Query provider
+│  │  └─ utils.ts             # clsx / tailwind-merge helper
+│  ├─ server/
+│  │  └─ trpc/                # tRPC server: context, router, procedures
+│  ├─ types/                  # Global type declarations (asset modules)
+│  └─ assets/                 # Local images / media
+├─ public/                    # Static assets served at root (logo, portrait)
+├─ DESIGN.md                  # ← this file
+├─ AGENTS.md                  # Agent skill-loading rules
+├─ next.config.ts
+├─ tsconfig.json
+├─ vercel.json
+├─ components.json            # shadcn/ui config (new-york style, Lucide icons)
+├─ postcss.config.mjs
+├─ eslint.config.js
+├─ .prettierrc
+└─ package.json
+```
+
+### Page Inventory
+
+| Route | Layout | Sections |
+|---|---|---|
+| `/` | Root → `(site)` | Redirects to `/home` |
+| `/home` | NavbarPublic + FooterPublic | Jumbotron (hero portrait + headline), Experience timeline, Education cards |
+
+### Data Flow
+
+```
+constants/*.ts  ─→  page component  ─→  presentation component
+tRPC procedure  ─→  React Query     ─→  container → presentation
+```
+
+Static portfolio data lives in `constants/`. Dynamic data (e.g. visitor count) uses tRPC procedures with React Query caching.
+
+## Tech Stack
+
+### Framework
+
+| Tool | Version | Role |
+|---|---|---|
+| **Next.js** | ^16.2.7 | App Router, RSC, API routes, image optimization (WebP + AVIF) |
+| **React** | ^19.2.7 | UI rendering (Server + Client Components) |
+| **React DOM** | ^19.2.7 | DOM renderer |
+| **TypeScript** | ~5.8.3 | Type safety, strict mode, bundler module resolution |
+
+Next.js runs with Turbopack in dev (`next dev`). Image config outputs WebP and AVIF at quality 100 and 75.
+
+### Styling
+
+| Tool | Version | Role |
+|---|---|---|
+| **Tailwind CSS** | ^4.1.11 | Utility-first styling via `@tailwindcss/postcss` |
+| **PostCSS** | — | Build pipeline (`postcss.config.mjs` → `@tailwindcss/postcss`) |
+| **tw-animate-css** | ^1.3.5 | Tailwind animation utilities |
+| **tailwind-merge** | ^3.3.1 | Conflict-free class merging in `cn()` |
+| **clsx** | ^2.1.1 | Conditional class joining |
+| **class-variance-authority** | ^0.7.1 | Typed component variants (Button, etc.) |
+
+Design tokens are defined as CSS custom properties in `globals.css` inside `@theme inline` (Tailwind v4 syntax) and `:root`. No `tailwind.config` file — configuration is CSS-native.
+
+### Animation & Interaction
+
+| Tool | Version | Role |
+|---|---|---|
+| **GSAP** | ^3.14.2 | ScrollTrigger, timeline sequencing, SplashScreen choreography |
+| **@gsap/react** | ^2.1.2 | `useGSAP` hook for safe React lifecycle integration |
+| **Framer Motion / Motion** | ^12.26.2 | Declarative layout animations, presence transitions |
+| **Lenis** | ^1.3.17 | Smooth scroll with inertia |
+| **OGL** | ^1.0.11 | WebGL particle background canvas |
+
+Custom animation components: `BlurText`, `FuzzyText`, `GlareHover`, `ScrollFloat`, `SplitText`, `Text-Generative-Effect`.
+
+### Data Layer
+
+| Tool | Version | Role |
+|---|---|---|
+| **tRPC** (client + server) | ^11.18.0 | End-to-end typesafe API between client and server |
+| **TanStack React Query** | ^5.101.2 | Server-state caching, optimistic updates, deduplication |
+| **Zod** | ^4.4.3 | Runtime schema validation (tRPC input/output) |
+| **client-only / server-only** | ^0.0.1 | Build-time boundary enforcement for RSC |
+
+tRPC is mounted as a Next.js API route under `src/app/api/`. The React Query provider wraps the component tree at the root layout level.
+
+### UI Primitives
+
+| Tool | Version | Role |
+|---|---|---|
+| **shadcn/ui** | — (CLI-installed) | Pre-built accessible components (new-york style, CSS variables, RSC) |
+| **Radix UI** | Slot ^1.2.3 / Progress ^1.1.7 | Headless accessible primitives under shadcn |
+| **Lucide React** | ^0.525.0 | Icon library (shadcn default) |
+
+shadcn components live in `src/components/ui/`. The registry includes `@react-bits` from reactbits.dev.
+
+### Fonts
+
+| Package | Version | Maps To |
+|---|---|---|
+| **@fontsource-variable/inter** | ^5.2.8 | Display + body (CursorGothic substitute) |
+| **@fontsource-variable/jetbrains-mono** | ^5.2.8 | Code surfaces |
+| **@fontsource-variable/plus-jakarta-sans** | ^5.2.8 | Available as alternate; not primary |
+
+Fonts are self-hosted via `@fontsource` (no external Google Fonts request). Imported at the top of `globals.css`.
+
+### Tooling
+
+| Tool | Version | Role |
+|---|---|---|
+| **ESLint** | ^9.29.0 | Linting (flat config with `typescript-eslint`, `react-hooks`, `react-refresh`) |
+| **Prettier** | ^3.8.0 | Formatting (single quotes, 100 print width, Tailwind class sorting) |
+| **Sharp** | ^0.34.5 | Next.js image optimization runtime (dev dependency) |
+
+### Deployment
+
+| Service | Config |
+|---|---|
+| **Vercel** | `vercel.json` — framework `nextjs`, build via `next build`, install via `npm install` |
+
+### Environment Variables
+
+| Variable | Scope | Purpose |
+|---|---|---|
+| `NEXT_PUBLIC_UNDER_DEVELOPMENT` | Client | Feature flag — shows "Under Development" overlay when `true` |
+
+### Path Aliases
+
+| Alias | Resolves To |
+|---|---|
+| `@/*` | `./src/*` |
+
+Configured in `tsconfig.json` (`paths`) and consumed by Next.js bundler resolution.

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import ScrollFloat from '@/components/custom/ScrollFloat';
+import ScrollFloat from '@/components/animations/ScrollFloat';
 import { ExternalLink } from 'lucide-react';
 import { experienceData } from '@/constants/experience';
 
@@ -136,7 +136,7 @@ export default function Experience(): React.JSX.Element {
           <p className="eyebrow text-subtle mb-3">Experience</p>
           <ScrollFloat
             containerClassName="mb-3"
-            textClassName="text-ink !text-3xl sm:!text-4xl xl:!text-5xl"
+            textClassName="text-ink !text-3xl sm:!text-4xl xl:!text-4xl"
             scrollStart="top bottom"
             scrollEnd="center center"
           >

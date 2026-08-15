@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import ScrollFloat from '@/components/custom/ScrollFloat';
+import ScrollFloat from '@/components/animations/ScrollFloat';
 import { Calendar } from 'lucide-react';
 import { educationData, cardVariants, type EducationItem } from '@/constants/education';
 
@@ -99,7 +99,7 @@ export default function Education(): React.JSX.Element {
           <p className="eyebrow text-subtle mb-3">Education</p>
           <ScrollFloat
             containerClassName="mb-3"
-            textClassName="text-ink !text-3xl sm:!text-4xl xl:!text-5xl"
+            textClassName="text-ink !text-3xl sm:!text-4xl xl:!text-4xl "
             scrollStart="top bottom"
             scrollEnd="center center"
           >

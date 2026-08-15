@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
-import FuzzyText from '@/components/custom/FuzzyText';
-import { GlassButton } from '@/components/custom/glass-button';
+import FuzzyText from '@/components/animations/FuzzyText';
+import { GlassButton } from '@/components/ui/glass-button';
 import ParticlesClient from '@/components/background/particles/ParticlesClient';
 
 export default function NotFound() {

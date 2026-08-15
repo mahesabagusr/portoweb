@@ -1,10 +1,12 @@
 'use client';
 
-import { GlassButton } from '@/components/custom/glass-button';
-import BlurText from '@/components/custom/BlurText';
+import { GlassButton } from '@/components/ui/glass-button';
+import BlurText from '@/components/animations/BlurText';
+import { useSplash } from '@/components/common/SplashProvider';
 import { Github, Linkedin, Instagram, Mail } from 'lucide-react';
 
 export default function Jumbotron(): React.JSX.Element {
+  const { splashDone } = useSplash();
   return (
     <div
       id="home"
@@ -22,23 +24,32 @@ export default function Jumbotron(): React.JSX.Element {
         />
       </div>
 
-      <div className="relative z-20 -mt-4 flex w-full items-center justify-center sm:-mt-6 md:-mt-8 lg:-mt-16">
+      <div className="relative z-20 -mt-8 flex w-full items-center justify-center sm:-mt-10 md:-mt-12 lg:-mt-18">
         <BlurText
           text="Mahesa Bagus Raditya"
-          className="display-mega text-ink justify-center px-2 text-center text-[34px] font-medium sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[70px]"
+          className="display-mega text-ink justify-center px-2 text-center text-[34px] font-normal sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[72px]"
           delay={150}
           animateBy="words"
           direction="top"
+          start={splashDone}
         />
       </div>
 
       <div className="relative z-20 w-full  space-y-6 px-4 sm:px-6">
-        <p className="animate-fade-in text-body fill-mode-[forwards] text-base leading-relaxed font-normal opacity-0 [animation-delay:0.5s] sm:text-lg">
+        <p
+          className={`text-body text-base leading-relaxed font-normal opacity-0 [animation-delay:0.5s] sm:text-lg ${
+            splashDone ? 'animate-fade-in fill-mode-[forwards]' : ''
+          }`}
+        >
           Undergraduate Informatics Student{' '}
           <span className="text-ink font-medium">@ Telkom University Bandung</span>
         </p>
 
-        <div className="animate-fade-in fill-mode-[forwards] pointer-events-auto flex flex-wrap items-center justify-center gap-x-5 gap-y-3 opacity-0 [animation-delay:0.7s]">
+        <div
+          className={`pointer-events-auto flex flex-wrap items-center justify-center gap-x-5 gap-y-3 opacity-0 [animation-delay:0.7s] ${
+            splashDone ? 'animate-fade-in fill-mode-[forwards]' : ''
+          }`}
+        >
           <a
             href="https://github.com/mahesabagusr"
             target="_blank"
