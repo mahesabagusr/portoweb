@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   icons: {
     icon: [{ url: '/logo.svg', sizes: '200x200', type: 'image/png' }],
   },
+  other: {
+    'google-adsense-account': 'ca-pub-9647783114393793',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

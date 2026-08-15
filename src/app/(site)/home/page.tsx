@@ -2,9 +2,13 @@ import { Suspense } from 'react';
 import Jumbotron from './_components/Jumbotron';
 import Education from './_components/Education';
 import Experience from './_components/Experience';
+import Projects from './_components/Projects';
 import ParticlesClient from '@/components/background/particles/ParticlesClient';
+import { getGitHubProjects } from '@/lib/github';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const projects = await getGitHubProjects();
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-4 text-center sm:px-6 lg:px-8">
       <div className="pointer-events-none fixed inset-0 z-0 h-full w-full">
@@ -20,6 +24,10 @@ export default function HomePage() {
       <Suspense fallback={null}>
         <Experience />
       </Suspense>
+      <Suspense fallback={null}>
+        <Projects initialProjects={projects} />
+      </Suspense>
     </div>
   );
 }
+
